@@ -13,7 +13,7 @@ public abstract class ModGameRules {
 
     public static final GameRules.Key<GameRules.IntegerValue>
         RULE_LOOPER_MAX_NOTES = GameRulesAccessor.callRegister(Main.MODID+"_looperMaxNotes", Category.MISC,
-            GameRuleIntegerInvoker.invokeCreate(255)
+            GameRuleIntegerInvoker.callCreate(255)
         )
     ;
     //NOTE: GameRulesIntRuleAccessor exists
