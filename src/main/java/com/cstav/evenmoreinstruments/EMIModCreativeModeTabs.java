@@ -19,7 +19,7 @@ public abstract class EMIModCreativeModeTabs {
 
     public static void regsiter() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
-            new ResourceLocation(Main.MODID, "instruments_tab"), INSTRUMENT_ACCESSORY_TAB
+            new ResourceLocation(Main.MODID, "instrument_accessories_tab"), INSTRUMENT_ACCESSORY_TAB
         );
     }
 
