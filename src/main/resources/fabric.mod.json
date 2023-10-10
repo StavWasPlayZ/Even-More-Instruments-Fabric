@@ -22,9 +22,12 @@
 	"entrypoints": {
 		"main": [
 			"com.cstav.evenmoreinstruments.Main"
+		],
+		"client": [
+			"com.cstav.evenmoreinstruments.client.ClientInitiator"
 		]
 	},
-	"!mixins": [
+	"mixins": [
 		"mixins.evenmoreinstruments.required.json",
 		"mixins.evenmoreinstruments.optional.json"
 	],

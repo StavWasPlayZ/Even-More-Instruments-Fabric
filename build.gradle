@@ -54,7 +54,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "maven.modrinth:genshin-instruments:${project.genshinstrument_version}"
-	modCompileOnly "curse.maven:forge-config-api-port-fabric-547434:${project.forge_config_api_port_version}"
+	modImplementation "curse.maven:forge-config-api-port-fabric-547434:${project.forge_config_api_port_version}"
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 	
