@@ -2,33 +2,39 @@
 	"schemaVersion": 1,
 	"id": "evenmoreinstruments",
 	"version": "${version}",
-	"name": "evenmoreinstruments",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Even More Instruments!",
+	"description": "A mod that expands on the capabilities of the Genshin Instruments mod with new instruments, tools and other cool stuff",
 	"authors": [
-		"Me!"
+		"Stav (IGN StavWasPlayZ)"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/genshin-instruments",
+		"sources": "https://github.com/StavWasPlayZ/Genshin-Instruments-Fabric",
+		"issues": "https://github.com/StavWasPlayZ/Genshin-Instruments-Fabric/issues"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/evenmoreinstruments/icon.png",
+	"contributors": [
+		"GenMode"
+	],
+
+	"license": "All rights reserved",
+	"icon": "icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.cstav.evenmoreinstruments.Evenmoreinstruments"
+			"com.cstav.evenmoreinstruments.Main"
 		]
 	},
 	"mixins": [
-		"evenmoreinstruments.mixins.json"
+		"mixins.evenmoreinstruments.required.json",
+		"mixins.evenmoreinstruments.optional.json"
 	],
 	"depends": {
+		"genshinstrument": ">=3.3.1",
+
 		"fabricloader": ">=0.14.23",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
+
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
