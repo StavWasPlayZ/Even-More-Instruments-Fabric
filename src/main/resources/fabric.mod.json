@@ -8,9 +8,9 @@
 		"Stav (IGN StavWasPlayZ)"
 	],
 	"contact": {
-		"homepage": "https://www.curseforge.com/minecraft/mc-mods/genshin-instruments",
-		"sources": "https://github.com/StavWasPlayZ/Genshin-Instruments-Fabric",
-		"issues": "https://github.com/StavWasPlayZ/Genshin-Instruments-Fabric/issues"
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/even-more-instruments",
+		"sources": "https://github.com/StavWasPlayZ/Even-More-Instruments-Fabric",
+		"issues": "https://github.com/StavWasPlayZ/Even-More-Instruments-Fabric/issues"
 	},
 	"contributors": [
 		"GenMode"
@@ -24,7 +24,7 @@
 			"com.cstav.evenmoreinstruments.Main"
 		]
 	},
-	"mixins": [
+	"!mixins": [
 		"mixins.evenmoreinstruments.required.json",
 		"mixins.evenmoreinstruments.optional.json"
 	],
