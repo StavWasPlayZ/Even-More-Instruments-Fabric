@@ -56,7 +56,7 @@ dependencies {
 	modImplementation "maven.modrinth:genshin-instruments:${project.genshinstrument_version}"
 	modImplementation "curse.maven:forge-config-api-port-fabric-547434:${project.forge_config_api_port_version}"
 
-	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 	
 
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
