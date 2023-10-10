@@ -11,6 +11,6 @@ Check out the Forge port [here](https://github.com/StavWasPlayZ/Even-More-Instru
 
 ## I have an idea for a new instrument!
 
-Feel free to suggest a new instrument to the project [here](https://github.com/StavWasPlayZ/Even-More-Instruments/issues/new?assignees=&labels=instrument+request&projects=&template=new-instrument-request.md&title=New+Instrument+Request%3A+Musical+Toilet+Paper)  
+Feel free to suggest a new instrument to the project [here](https://github.com/StavWasPlayZ/Even-More-Instruments/issues/new?assignees=&labels=instrument+request&projects=&template=new-instrument-request.md&title=New+Instrument+Request%3A+Musical+Toilet+Paper)!  
 Proposed instruments will be added once per ~2 months of release cycles.  
 **PLEASE FOLLOW THE TEMPLATE'S GIVEN INSTRUCTIONS!**
