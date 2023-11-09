@@ -28,6 +28,10 @@ repositories {
 		maven { url 'https://maven.terraformersmc.com/releases/' }
 	}
 
+	flatDir {
+		dir 'libs'
+	}
+
 	exclusiveContent {
         forRepository {
             maven {
@@ -53,7 +57,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "maven.modrinth:genshin-instruments:${project.genshinstrument_version}"
+//	modImplementation "maven.modrinth:genshin-instruments:${project.genshinstrument_version}"
+	modImplementation "idc:genshinstrument-fabric:${project.minecraft_version}-${project.genshinstrument_version}"
 	modImplementation "curse.maven:forge-config-api-port-fabric-547434:${project.forge_config_api_port_version}"
 
 	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"

@@ -35,7 +35,7 @@ public class ViolinScreen extends AbstractGridInstrumentScreen {
     }
 
     public ViolinSoundType defSoundType() {
-        return ((ViolinOptionsScreen)optionsScreen).getPerferredSoundType();
+        return ((ViolinOptionsScreen)optionsScreen).getPreferredSoundType();
     }
 
     @Override
