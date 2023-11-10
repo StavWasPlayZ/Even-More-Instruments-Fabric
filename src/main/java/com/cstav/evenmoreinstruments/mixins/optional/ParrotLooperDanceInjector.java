@@ -1,5 +1,6 @@
 package com.cstav.evenmoreinstruments.mixins.optional;
 
+import com.cstav.evenmoreinstruments.block.ModBlocks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,9 +38,7 @@ public abstract class ParrotLooperDanceInjector extends Entity {
     @Inject(at = @At(value = "HEAD"), method = "aiStep()V")
     private void aiStepHead(final CallbackInfo info) {
         jukeboxBefore = jukebox;
-        //TODO re-implement
-        // isLooper = (jukebox != null) && level().getBlockState(jukebox).is(ModBlocks.LOOPER);
-        isLooper = false;
+        isLooper = (jukebox != null) && level().getBlockState(jukebox).is(ModBlocks.LOOPER);
 
         partiedBefore = partyParrot;
     }

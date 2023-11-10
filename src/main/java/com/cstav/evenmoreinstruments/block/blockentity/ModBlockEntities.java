@@ -13,20 +13,20 @@ public class ModBlockEntities {
     public static void load() {}
 
 
-    // public static final RegistryObject<BlockEntityType<LooperBlockEntity>> LOOPER = BLOCK_ENTITIES.register("looper", () ->
-    //     BlockEntityType.Builder.of(
-    //         LooperBlockEntity::new, ModBlocks.LOOPER.get()
-    //     ).build(null)
-    // );
+     public static final BlockEntityType<LooperBlockEntity> LOOPER = register("looper",
+         BlockEntityType.Builder.of(
+             LooperBlockEntity::new, ModBlocks.LOOPER
+         ).build(null)
+     );
 
-    public static final BlockEntityType<ModInstrumentBlockEntity> INSTRUMENT_BE = regsiter("instrument_be",
+    public static final BlockEntityType<ModInstrumentBlockEntity> INSTRUMENT_BE = register("instrument_be",
         BlockEntityType.Builder.of(ModInstrumentBlockEntity::new,
             ModBlocks.KEYBOARD, ModBlocks.KEYBOARD_STAND
         )
         .build(null)
     );
     
-    private static <T extends BlockEntity> BlockEntityType<T> regsiter(final String name, final BlockEntityType<T> bet) {
+    private static <T extends BlockEntity> BlockEntityType<T> register(final String name, final BlockEntityType<T> bet) {
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(Main.MODID, name), bet);
         return bet;
     }

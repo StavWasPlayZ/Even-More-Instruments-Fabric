@@ -1,113 +1,113 @@
-// package com.cstav.evenmoreinstruments.client.gui.instrument;
+ package com.cstav.evenmoreinstruments.client.gui.instrument;
 
-// import java.util.Optional;
+ import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
+ import com.cstav.evenmoreinstruments.networking.packet.LooperRecordStatePacket;
+ import com.cstav.evenmoreinstruments.networking.packet.UpdateLooperRemovedForInstrument;
+ import com.cstav.evenmoreinstruments.util.LooperUtil;
+ import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+ import com.cstav.genshinstrument.util.InstrumentEntityData;
+ import net.fabricmc.api.EnvType;
+ import net.fabricmc.api.Environment;
+ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+ import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.gui.components.Button;
+ import net.minecraft.client.gui.screens.Screen;
+ import net.minecraft.client.player.LocalPlayer;
+ import net.minecraft.core.BlockPos;
+ import net.minecraft.network.chat.Component;
+ import net.minecraft.world.InteractionHand;
+ import net.minecraft.world.entity.player.Player;
+ import net.minecraft.world.item.ItemStack;
+ import net.minecraft.world.level.block.entity.BlockEntity;
 
-// import com.cstav.evenmoreinstruments.Main;
-// import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
-// import com.cstav.evenmoreinstruments.networking.packet.LooperRecordStatePacket;
-// import com.cstav.evenmoreinstruments.networking.packet.UpdateLooperRemovedForInstrument;
-// import com.cstav.evenmoreinstruments.util.LooperUtil;
-// import com.cstav.genshinstrument.capability.instrumentOpen.InstrumentOpenProvider;
-// import com.cstav.genshinstrument.client.gui.screen.instrument.partial.AbstractInstrumentScreen;
+ import java.util.Optional;
 
-// import net.minecraft.client.Minecraft;
-// import net.minecraft.client.gui.components.Button;
-// import net.minecraft.client.player.LocalPlayer;
-// import net.minecraft.core.BlockPos;
-// import net.minecraft.network.chat.Component;
-// import net.minecraft.world.InteractionHand;
-// import net.minecraft.world.entity.player.Player;
-// import net.minecraft.world.item.ItemStack;
-// import net.minecraft.world.level.block.entity.BlockEntity;
-// import net.minecraftforge.api.distmarker.Dist;
-// import net.minecraftforge.api.distmarker.OnlyIn;
-// import net.minecraftforge.client.event.ScreenEvent;
-// import net.minecraftforge.eventbus.api.SubscribeEvent;
-// import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-// import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-
-//TODO re-implement
-// @Environment(EnvType.CLIENT)
-// @EventBusSubscriber(bus = Bus.FORGE, modid = Main.MODID, value = Dist.CLIENT)
-// public class LooperOverlayInjector {
-//     private static final int REC_BTN_WIDTH = 120;
+ @Environment(EnvType.CLIENT)
+ public class LooperOverlayInjector {
+     private static final int REC_BTN_WIDTH = 120;
     
-//     private static AbstractInstrumentScreen screen = null;
-//     private static boolean isRecording = false;
-//     private static Button recordBtn;
+     private static AbstractInstrumentScreen screen = null;
+     private static boolean isRecording = false;
+     private static Button recordBtn;
 
-//     @SuppressWarnings("resource")
-//     @SubscribeEvent
-//     public static void onScreenInit(final ScreenEvent.Init.Post event) {
-//         if (!(event.getScreen() instanceof AbstractInstrumentScreen))
-//             return;
+     @SuppressWarnings("resource")
+     public static void onScreenInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
+         if (!(screen instanceof AbstractInstrumentScreen instrumentScreen))
+             return;
 
-//         final AbstractInstrumentScreen screen = (AbstractInstrumentScreen) event.getScreen();
-//         final Player player = Minecraft.getInstance().player;
+         final Player player = Minecraft.getInstance().player;
 
-//         if (screen.interactionHand.isPresent()) {
-//             final InteractionHand hand = screen.interactionHand.get();
-//             final ItemStack instrumentItem = player.getItemInHand(hand);
+         if (instrumentScreen.interactionHand.isPresent()) {
+             final InteractionHand hand = instrumentScreen.interactionHand.get();
+             final ItemStack instrumentItem = player.getItemInHand(hand);
             
-//             // Send am update request upon opening an item instrument's screen
-//             ModPacketHandler.sendToServer(new UpdateLooperRemovedForInstrument(hand));
+             // Send am update request upon opening an item instrument's screen
+             ModPacketHandler.sendToServer(new UpdateLooperRemovedForInstrument(hand));
 
-//             if (!LooperUtil.hasLooperTag(instrumentItem))
-//                 return;
-//         } else {
-//             ModPacketHandler.sendToServer(new UpdateLooperRemovedForInstrument());
-//         }
+             if (!LooperUtil.hasLooperTag(instrumentItem))
+                 return;
+         } else {
+             ModPacketHandler.sendToServer(new UpdateLooperRemovedForInstrument());
+         }
 
-//         LooperOverlayInjector.screen = screen;
+         LooperOverlayInjector.screen = instrumentScreen;
 
-//         event.addListener(
-//             recordBtn = new Button((screen.width - REC_BTN_WIDTH) / 2, 5, REC_BTN_WIDTH, 20,
-//                 Component.translatable("button.evenmoreinstruments.record"),
-//                 LooperOverlayInjector::onRecordPress
-//             )
-//         );
-//     }
+         ScreenExtensions.getExtensions(screen).fabric_getButtons().add(
+             recordBtn = Button.builder(
+                 Component.translatable("button.evenmoreinstruments.record"),
+                 LooperOverlayInjector::onRecordPress
+             )
+             .width(REC_BTN_WIDTH)
+             .pos((screen.width - REC_BTN_WIDTH) / 2, 5)
+             .build()
+         );
 
-//     @SubscribeEvent
-//     public static void onScreenClose(final ScreenEvent.Closing event) {
-//         if (isRecording && (event.getScreen() == screen)) {
-//             ModPacketHandler.sendToServer(
-//                 new LooperRecordStatePacket(false, screen.interactionHand)
-//             );
+         ScreenEvents.remove(instrumentScreen).register(LooperOverlayInjector::onScreenClose);
+     }
+
+     public static void onScreenClose(final Screen screen) {
+         final AbstractInstrumentScreen instrumentScreen = LooperOverlayInjector.screen;
+
+         if (isRecording && (instrumentScreen == screen)) {
+             ModPacketHandler.sendToServer(
+                 new LooperRecordStatePacket(false, instrumentScreen.interactionHand)
+             );
             
-//             isRecording = false;
-//         }
-//     }
+             isRecording = false;
+         }
+     }
     
-//     @SuppressWarnings("resource")
-//     private static void onRecordPress(final Button btn) {
-//         final LocalPlayer player = Minecraft.getInstance().player;
-//         final Optional<InteractionHand> hand = screen.interactionHand;
+     @SuppressWarnings("resource")
+     private static void onRecordPress(final Button btn) {
+         final LocalPlayer player = Minecraft.getInstance().player;
+         final Optional<InteractionHand> hand = screen.interactionHand;
 
-//         isRecording = hand.isPresent()
-//             ? LooperUtil.isRecording(LooperUtil.looperTag(player.getItemInHand(hand.get())))
-//             : LooperUtil.isRecording(LooperUtil.looperTag(getIBE(player)));
-
-
-//         if (isRecording) {
-//             removeRecordButton();
-//             screen = null;
-//         } else
-//             btn.setMessage(Component.translatable("button.evenmoreinstruments.stop"));
-
-//         ModPacketHandler.sendToServer(new LooperRecordStatePacket(!isRecording, hand));
-//     }
-
-//     private static BlockEntity getIBE(final Player player) {
-//         final BlockPos instrumentPos = InstrumentOpenProvider.getBlockPos(player);
-
-//         return (instrumentPos == null) ? null
-//             : player.getLevel().getBlockEntity(instrumentPos);
-//     }
+         isRecording = hand
+             .map((interactionHand) -> LooperUtil.isRecording(LooperUtil.looperTag(player.getItemInHand(interactionHand))))
+             .orElseGet(() -> LooperUtil.isRecording(LooperUtil.looperTag(getIBE(player))));
 
 
-//     public static void removeRecordButton() {
-//         if (screen != null)
-//             screen.renderables.removeIf((renderable) -> renderable.equals(recordBtn));
-//     }
-// }
+         if (isRecording) {
+             removeRecordButton();
+             screen = null;
+         } else
+             btn.setMessage(Component.translatable("button.evenmoreinstruments.stop"));
+
+         ModPacketHandler.sendToServer(new LooperRecordStatePacket(!isRecording, hand));
+     }
+
+     private static BlockEntity getIBE(final Player player) {
+         final BlockPos instrumentPos = InstrumentEntityData.getBlockPos(player);
+
+         return (instrumentPos == null) ? null
+             : player.level().getBlockEntity(instrumentPos);
+     }
+
+
+     public static void removeRecordButton() {
+         if (screen != null)
+             ScreenExtensions.getExtensions(screen)
+                 .fabric_getButtons().removeIf((renderable) -> renderable.equals(recordBtn));
+     }
+ }

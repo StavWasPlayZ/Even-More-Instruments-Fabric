@@ -2,8 +2,7 @@ package com.cstav.evenmoreinstruments.networking;
 
 import java.util.List;
 
-import com.cstav.evenmoreinstruments.networking.packet.ModOpenInstrumentPacket;
-import com.cstav.evenmoreinstruments.networking.packet.OpenNoteBlockInstrumentPacket;
+import com.cstav.evenmoreinstruments.networking.packet.*;
 import com.cstav.genshinstrument.networking.IModPacket;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -18,13 +17,13 @@ public class ModPacketHandler {
     @SuppressWarnings("unchecked")
     private static final List<Class<IModPacket>>
         S2C_PACKETS = List.of(new Class[] {
-            ModOpenInstrumentPacket.class, OpenNoteBlockInstrumentPacket.class
+            ModOpenInstrumentPacket.class, OpenNoteBlockInstrumentPacket.class,
 
-            // LooperPlayState.class, LooperRemovedPacket.class
-            // SyncModTagPacket.class
+             LooperPlayStatePacket.class, LooperRemovedPacket.class,
+             SyncModTagPacket.class
         }),
         C2S_PACKETS = List.of(new Class[] {
-            // LooperRecordStatePacket.class, UpdateLooperRemovedForInstrument.class
+             LooperRecordStatePacket.class, UpdateLooperRemovedForInstrument.class
         })
     ;
 

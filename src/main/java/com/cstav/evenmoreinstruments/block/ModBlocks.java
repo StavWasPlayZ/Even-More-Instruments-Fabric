@@ -20,9 +20,9 @@ public class ModBlocks {
         )),
         KEYBOARD_STAND = register("keyboard_stand", new KeyboardStandBlock(
             Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
-        ))
+        )),
 
-        // LOOPER = register("looper", new LooperBlock(Properties.copy(Blocks.NOTE_BLOCK)))
+        LOOPER = register("looper", new LooperBlock(Properties.copy(Blocks.NOTE_BLOCK)))
     ;
 
 

@@ -1,5 +1,8 @@
 package com.cstav.evenmoreinstruments;
 
+import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
+import com.cstav.evenmoreinstruments.util.CommonUtil;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,10 +24,9 @@ public class Main implements ModInitializer {
     public static CompoundTag modTag(final ItemStack item) {
         return item.getOrCreateTagElement(MODID);
     }
-    //TODO implement getPersistentData for BlockEntities
-    // public static CompoundTag modTag(final BlockEntity be) {
-    //     return CommonUtil.getOrCreateElementTag(be.getPersistentData(), MODID);
-    // }
+    public static CompoundTag modTag(final BlockEntity be) {
+        return ((InjectedBlockEntity)be).getModTag();
+    }
     
     @Override
     public void onInitialize() {

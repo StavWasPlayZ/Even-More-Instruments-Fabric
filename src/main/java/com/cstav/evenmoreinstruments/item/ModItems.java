@@ -29,12 +29,12 @@ public class ModItems {
     public static void load() {}
 
     private static void defaultInstrumentsTabs(final Item item) {
-        addToTab(ModCreativeModeTabs.INSTRUMENTS_TAB, item);
-        addToTab(CreativeModeTabs.BUILDING_BLOCKS, item);
+        addToTab(item, ModCreativeModeTabs.INSTRUMENTS_TAB);
+        addToTab(item, CreativeModeTabs.BUILDING_BLOCKS);
     }
     private static void defaultInstrumentBlocksTab(final Item item) {
         defaultInstrumentsTabs(item);
-        addToTab(CreativeModeTabs.FUNCTIONAL_BLOCKS, item);
+        addToTab(item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
     }
 
 
@@ -53,22 +53,22 @@ public class ModItems {
         TROMBONE = register("trombone", new TromboneItem()),
 
 
+        LOOPER = registerBlockItem(ModBlocks.LOOPER, (item) -> {
+            addToTab(item, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB);
+            addToTab(item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
+            addToTab(item, CreativeModeTabs.REDSTONE_BLOCKS);
+        }),
+        LOOPER_ADAPTER = register("looper_adapter", new LooperAdapterItem(new Properties()), (item) -> {
+            addToTab(item, CreativeModeTabs.REDSTONE_BLOCKS);
+            addToTab(item, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB);
+        }),
+
         KEYBOARD = register("keyboard",
             new KeyboardBlockItem(ModBlocks.KEYBOARD, new Properties()),
             ModItems::defaultInstrumentBlocksTab
         ),
-
-
-        //TODO re-implement
-        // LOOPER = registerBlockItem(ModBlocks.LOOPER,
-        //     getKey(EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB), CreativeModeTabs.FUNCTIONAL_BLOCKS,
-        //     CreativeModeTabs.REDSTONE_BLOCKS
-        // ),
-        // LOOPER_ADAPTER = register("looper_adapter", new LooperAdapterItem(new Properties()),
-        //     CreativeModeTabs.REDSTONE_BLOCKS, getKey(EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB)
-        // ),
         KEYBOARD_STAND = registerBlockItem(ModBlocks.KEYBOARD_STAND, (item) ->
-            addToTab(EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB, item)
+            addToTab(item, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB)
         )
     ;
 
@@ -114,13 +114,13 @@ public class ModItems {
     }
 
 
-    private static void addToTab(CreativeModeTab tab, final Item item) {
+    private static void addToTab(final Item item, CreativeModeTab tab) {
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((_tab, entries) -> {
             if (getKey(tab).equals(getKey(_tab)))
                 entries.accept(item);
         });
     }
-    private static void addToTab(final ResourceKey<CreativeModeTab> tabKey, final Item item) {
+    private static void addToTab(final Item item, final ResourceKey<CreativeModeTab> tabKey) {
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((tab, entries) -> {
             if (getKey(tab).equals(tabKey))
                 entries.accept(item);

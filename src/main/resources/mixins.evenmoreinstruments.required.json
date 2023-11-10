@@ -3,7 +3,8 @@
 	"package": "com.cstav.evenmoreinstruments.mixins.required",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-        "GameRuleIntegerInvoker"
+        "GameRuleIntegerInvoker",
+        "BlockEntityNBTInjector"
 	],
 	"minVersion": "0.8",
 	"injectors": {
