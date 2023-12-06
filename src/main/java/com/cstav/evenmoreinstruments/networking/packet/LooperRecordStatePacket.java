@@ -5,6 +5,7 @@
  import com.cstav.evenmoreinstruments.block.blockentity.LooperBlockEntity;
  import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
  import com.cstav.evenmoreinstruments.util.LooperUtil;
+ import com.cstav.evenmoreinstruments.util.ServerUtil;
  import com.cstav.genshinstrument.networking.IModPacket;
  import com.cstav.genshinstrument.util.InstrumentEntityData;
  import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -26,9 +27,9 @@
      private final Optional<InteractionHand> usedHand;
      private final boolean recording;
 
-     public LooperRecordStatePacket(boolean recording, Optional<InteractionHand> usedHand) {
+     public LooperRecordStatePacket(boolean recording, InteractionHand usedHand) {
          this.recording = recording;
-         this.usedHand = usedHand;
+         this.usedHand = Optional.ofNullable(usedHand);
      }
      public LooperRecordStatePacket(final FriendlyByteBuf buf) {
          recording = buf.readBoolean();
@@ -60,10 +61,10 @@
          final BlockEntity instrumentBlock = player.level().getBlockEntity(instrumentBlockPos);
          final CompoundTag looperTag = LooperUtil.looperTag(instrumentBlock);
 
-         if (isMaliciousPos(player, looperTag))
+         if (ServerUtil.isMaliciousPos(player, looperTag))
              return;
 
-         final LooperBlockEntity lbe = LooperBlockEntity.getLBE(player.level(), instrumentBlock);
+         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.level(), instrumentBlock);
          changeRecordingState(player, looperTag, lbe, () -> LooperUtil.remLooperTag(instrumentBlock));
 
          ModPacketHandler.sendToClient(new SyncModTagPacket(Main.modTag(instrumentBlock), instrumentBlockPos), player);
@@ -72,11 +73,11 @@
          final ItemStack instrumentItem = player.getItemInHand(usedHand.get());
          final CompoundTag looperTag = LooperUtil.looperTag(instrumentItem);
 
-         if (isMaliciousPos(player, looperTag))
+         if (ServerUtil.isMaliciousPos(player, looperTag))
              return;
 
 
-         final LooperBlockEntity lbe = LooperBlockEntity.getLBE(player.level(), instrumentItem);
+         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.level(), instrumentItem);
          changeRecordingState(player, looperTag, lbe, () -> LooperUtil.remLooperTag(instrumentItem));
      }
 
@@ -100,13 +101,6 @@
              removeLooperTagRunnable.run();
          } else
              LooperUtil.setRecording(looperTag, true);
-     }
-
-     // According to Forge
-     @SuppressWarnings("deprecation")
-     private static boolean isMaliciousPos(final Player player, final CompoundTag looperTag) {
-         final BlockPos looperPos = LooperUtil.getLooperPos(looperTag);
-         return !player.level().hasChunkAt(looperPos);
      }
 
  }

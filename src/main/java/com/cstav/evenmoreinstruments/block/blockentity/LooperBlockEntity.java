@@ -10,7 +10,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.slf4j.Logger;
 
-import com.cstav.evenmoreinstruments.Main;
 import com.cstav.evenmoreinstruments.block.IDoubleBlock;
 import com.cstav.evenmoreinstruments.block.LooperBlock;
 import com.cstav.evenmoreinstruments.block.ModBlocks;
@@ -182,7 +181,7 @@ public class LooperBlockEntity extends BlockEntity {
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         // idk why but it needs to be here for it to work
-        final LooperBlockEntity lbe = getLBE(pLevel, pPos);
+        final LooperBlockEntity lbe = LooperUtil.getFromPos(pLevel, pPos);
         final boolean isPlaying = lbe.getBlockState().getValue(LooperBlock.PLAYING);
 
         if (!isPlaying && !lbe.isRecording())
@@ -207,8 +206,7 @@ public class LooperBlockEntity extends BlockEntity {
             try {
 
                 final int pitch = note.getInt("pitch");
-                // Volume property did not exist before v2.1
-                final float volume = note.contains("volume", Tag.TAG_FLOAT) ? note.getFloat("volume") : 1;
+                final float volume = note.getFloat("volume");
 
                 final ResourceLocation soundLocation = new ResourceLocation(note.getString("soundType"));
 
@@ -227,42 +225,6 @@ public class LooperBlockEntity extends BlockEntity {
 
 
 
-    public static LooperBlockEntity getLBE(final Level level, final ItemStack instrument) {
-        return getLBE(level, LooperUtil.looperTag(instrument), () -> LooperUtil.remLooperTag(instrument));
-    }
-    public static LooperBlockEntity getLBE(final Level level, final BlockEntity instrument) {
-        return getLBE(level, LooperUtil.looperTag(instrument), () -> {
-            LooperUtil.remLooperTag(instrument);
-
-            final BlockPos pos = instrument.getBlockPos();
-            final BlockState state = level.getBlockState(pos);
-            if (state.getBlock() instanceof IDoubleBlock doubleBlock)
-                LooperUtil.remLooperTag(level.getBlockEntity(doubleBlock.getOtherBlock(state, pos, level)));
-        });
-    }
-    /**
-     * Attempts to get the looper pointed out by {@code looperData}. Removes its reference if not found.
-     * @return The Looper's block entity as pointed in the {@code instrument}'s data.
-     * Null if not found
-     */
-    private static LooperBlockEntity getLBE(Level level, CompoundTag looperData, Runnable onInvalid) {
-        if (looperData.isEmpty())
-            return null;
-
-        final LooperBlockEntity looperBE = getLBE(level, LooperUtil.getLooperPos(looperData));
-
-        if (looperBE == null)
-            onInvalid.run();
-
-        return looperBE;
-    }
-
-    private static LooperBlockEntity getLBE(final Level level, final BlockPos pos) {
-        return (level.getBlockEntity(pos) instanceof LooperBlockEntity lbe) ? lbe : null;
-    }
-
-
-
     // Subscribe to events
     static {
         InstrumentPlayedEvent.ByPlayer.EVENT.register(LooperBlockEntity::onInstrumentPlayed);
@@ -276,10 +238,7 @@ public class LooperBlockEntity extends BlockEntity {
 
         final Level level = event.player.level();
 
-        final LooperBlockEntity looperBE = event.itemInstrument.isPresent()
-            ? getLBE(level, event.itemInstrument.get())
-            : getLBE(level, event.level.getBlockEntity(event.playPos));
-
+        final LooperBlockEntity looperBE = LooperUtil.getFromEvent(event);
         if (looperBE == null)
             return;
 

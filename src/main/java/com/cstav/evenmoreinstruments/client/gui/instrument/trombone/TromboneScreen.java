@@ -3,7 +3,7 @@ package com.cstav.evenmoreinstruments.client.gui.instrument.trombone;
 import com.cstav.evenmoreinstruments.Main;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 
 import net.fabricmc.api.EnvType;
@@ -12,12 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 
 @Environment(EnvType.CLIENT)
-public class TromboneScreen extends AbstractGridInstrumentScreen {
+public class TromboneScreen extends GridInstrumentScreen {
     public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(Main.MODID, "trombone");
 
-    public TromboneScreen(InteractionHand hand) {
-        super(hand);
-    }
 
     @Override
     public NoteSound[] getInitSounds() {

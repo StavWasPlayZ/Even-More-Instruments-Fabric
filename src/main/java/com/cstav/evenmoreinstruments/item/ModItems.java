@@ -6,6 +6,7 @@ import java.util.Map;
 import com.cstav.evenmoreinstruments.EMIModCreativeModeTabs;
 import com.cstav.evenmoreinstruments.Main;
 import com.cstav.evenmoreinstruments.block.ModBlocks;
+import com.cstav.evenmoreinstruments.item.partial.WindInstrumentItem;
 import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
 import com.cstav.evenmoreinstruments.networking.packet.ModOpenInstrumentPacket;
 import com.cstav.genshinstrument.ModCreativeModeTabs;
@@ -40,17 +41,26 @@ public class ModItems {
 
     public static final Item
         VIOLIN = register("violin", new InstrumentItem(
-            (player, hand) -> ModPacketHandler.sendToClient(
-                new ModOpenInstrumentPacket("violin", hand), player
+            (player) -> ModPacketHandler.sendToClient(
+                new ModOpenInstrumentPacket("violin"), player
             )
         )),
         GUITAR = register("guitar", new InstrumentItem(
-            (player, hand) -> ModPacketHandler.sendToClient(
-                new ModOpenInstrumentPacket("guitar", hand), player
+            (player) -> ModPacketHandler.sendToClient(
+                new ModOpenInstrumentPacket("guitar"), player
             )
         )),
 
-        TROMBONE = register("trombone", new TromboneItem()),
+        TROMBONE = register("trombone", new WindInstrumentItem(
+            (player) -> ModPacketHandler.sendToClient(
+                new ModOpenInstrumentPacket("trombone"), player
+            )
+        )),
+        SAXOPHONE = register("saxophone", new WindInstrumentItem(
+            (player) -> ModPacketHandler.sendToClient(
+                new ModOpenInstrumentPacket("saxophone"), player
+            )
+        )),
 
 
         LOOPER = registerBlockItem(ModBlocks.LOOPER, (item) -> {

@@ -23,6 +23,8 @@ public class ModSounds {
         VIOLIN_HALF_NOTE = nsr(loc("violin_half")).registerGrid(),
 
         TROMBONE = nsr(loc("trombone")).registerGrid(),
+        SAXOPHONE = nsr(loc("saxophone")).registerGrid(),
+
         GUITAR = nsr(loc("guitar")).registerGrid()
     ;
 

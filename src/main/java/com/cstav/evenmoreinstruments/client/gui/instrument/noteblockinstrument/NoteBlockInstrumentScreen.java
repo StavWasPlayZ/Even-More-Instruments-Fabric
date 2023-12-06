@@ -5,7 +5,7 @@ import com.cstav.evenmoreinstruments.item.NoteBlockInstrumentItem;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.AbstractGridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.fabricmc.api.EnvType;
@@ -15,15 +15,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
 @Environment(EnvType.CLIENT)
-public class NoteBlockInstrumentScreen extends AbstractGridInstrumentScreen {
+public class NoteBlockInstrumentScreen extends GridInstrumentScreen {
     public static final String[] NOTES_LAYOUT = {"F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F"};
 
     public final NoteBlockInstrument instrumentType;
     public final ResourceLocation instrumentId;
     
-    public NoteBlockInstrumentScreen(InteractionHand hand, final NoteBlockInstrument instrumentType) {
-        super(hand);
-
+    public NoteBlockInstrumentScreen(final NoteBlockInstrument instrumentType) {
         this.instrumentType = instrumentType;
         instrumentId = new ResourceLocation(Main.MODID, NoteBlockInstrumentItem.getId(instrumentType));
 

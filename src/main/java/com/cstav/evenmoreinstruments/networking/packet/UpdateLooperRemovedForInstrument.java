@@ -3,6 +3,7 @@
  import com.cstav.evenmoreinstruments.Main;
  import com.cstav.evenmoreinstruments.block.blockentity.LooperBlockEntity;
  import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
+ import com.cstav.evenmoreinstruments.util.LooperUtil;
  import com.cstav.genshinstrument.networking.IModPacket;
  import com.cstav.genshinstrument.util.InstrumentEntityData;
  import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -11,6 +12,7 @@
  import net.minecraft.server.level.ServerPlayer;
  import net.minecraft.world.InteractionHand;
  import net.minecraft.world.entity.player.Player;
+ import net.minecraft.world.item.ItemStack;
  import net.minecraft.world.level.Level;
  import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -18,6 +20,7 @@
 
 
  public class UpdateLooperRemovedForInstrument implements IModPacket {
+     public static final int MAX_RECORD_DIST = 8;
 
      final Optional<InteractionHand> hand;
 
@@ -44,25 +47,32 @@
          final ServerPlayer player = (ServerPlayer) lPlayer;
          final Level level = player.level();
 
-         LooperBlockEntity result;
+         LooperBlockEntity looperBE;
 
-         if (hand.isPresent())
-             result = LooperBlockEntity.getLBE(level, player.getItemInHand(hand.get()));
-         else {
+         if (hand.isPresent()) {
+             final ItemStack instrumentItem = player.getItemInHand(hand.get());
+             looperBE = LooperUtil.getFromInstrument(level, instrumentItem);
+
+             if (looperBE != null)
+                 if (!looperBE.getBlockPos().closerToCenterThan(player.position(), MAX_RECORD_DIST)) {
+                     looperBE = null;
+                     LooperUtil.remLooperTag(instrumentItem);
+                 }
+         } else {
              final BlockPos instrumentBlockPos = InstrumentEntityData.getBlockPos(player);
              final BlockEntity instrumentBlockEntity = level.getBlockEntity(instrumentBlockPos);
             
-             result = LooperBlockEntity.getLBE(level, instrumentBlockEntity);
+             looperBE = LooperUtil.getFromInstrument(level, instrumentBlockEntity);
 
              // Manually update the tag removal for the client
-             if (result == null)
+             if (looperBE == null)
                  ModPacketHandler.sendToClient(
                      new SyncModTagPacket(Main.modTag(instrumentBlockEntity), instrumentBlockPos)
                  , player);
 
          }
 
-         if (result == null)
+         if (looperBE == null)
              ModPacketHandler.sendToClient(new LooperRemovedPacket(), player);
      }
     

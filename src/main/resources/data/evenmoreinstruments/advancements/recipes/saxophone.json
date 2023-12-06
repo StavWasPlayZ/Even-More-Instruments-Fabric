@@ -1,0 +1,29 @@
+{
+    "parent": "evenmoreinstruments:recipes/root",
+
+    "criteria": {
+        "has_item": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "minecraft:copper_block",
+                            "minecraft:copper_ingot"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+
+    "requirements": [
+        ["has_item"]
+    ],
+
+    "rewards": {
+        "recipes": [
+            "evenmoreinstruments:saxophone"
+        ]
+    }
+}

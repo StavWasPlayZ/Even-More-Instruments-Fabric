@@ -7,6 +7,7 @@ import com.cstav.evenmoreinstruments.client.gui.instrument.LooperOverlayInjector
 import com.cstav.evenmoreinstruments.client.gui.instrument.guitar.GuitarScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.keyboard.KeyboardScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.noteblockinstrument.NoteBlockInstrumentScreen;
+import com.cstav.evenmoreinstruments.client.gui.instrument.saxophone.SaxophoneScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.trombone.TromboneScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.violin.ViolinScreen;
 import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
@@ -25,7 +26,7 @@ public class ClientInitiator implements ClientModInitializer {
     private static final List<Class<?>> LOAD_ME = List.of(
 		ViolinScreen.class, TromboneScreen.class,
         NoteBlockInstrumentScreen.class, KeyboardScreen.class,
-        GuitarScreen.class
+        GuitarScreen.class, SaxophoneScreen.class
 	);
 
 

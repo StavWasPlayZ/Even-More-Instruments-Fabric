@@ -10,7 +10,7 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class ModArmPose {
     
-    public static void poseForTrombone(PosePlayerArmEventArgs args) {
+    public static void poseForWindInstrument(PosePlayerArmEventArgs args) {
         if (!InstrumentEntityData.isOpen(args.player) || !InstrumentEntityData.isItem(args.player))
             return;
 
@@ -23,6 +23,8 @@ public class ModArmPose {
             args.arm.zRot = 0.55f;
             args.arm.yRot = 0.5f;
         }
+
+        args.setCanceled(true);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.cstav.evenmoreinstruments;
 
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
-import com.cstav.evenmoreinstruments.util.CommonUtil;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
