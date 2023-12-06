@@ -23,11 +23,11 @@ import net.minecraftforge.fml.config.ModConfig;
 @Environment(EnvType.CLIENT)
 public class ClientInitiator implements ClientModInitializer {
 
-    private static final List<Class<?>> LOAD_ME = List.of(
-		ViolinScreen.class, TromboneScreen.class,
+    private static final Class<?>[] LOAD_ME = new Class[] {
+        ViolinScreen.class, TromboneScreen.class,
         NoteBlockInstrumentScreen.class, KeyboardScreen.class,
         GuitarScreen.class, SaxophoneScreen.class
-	);
+    };
 
 
     @Override
