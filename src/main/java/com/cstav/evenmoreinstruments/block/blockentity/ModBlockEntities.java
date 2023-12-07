@@ -2,6 +2,7 @@ package com.cstav.evenmoreinstruments.block.blockentity;
 
 import com.cstav.evenmoreinstruments.Main;
 import com.cstav.evenmoreinstruments.block.ModBlocks;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -12,13 +13,13 @@ public class ModBlockEntities {
 
 
      public static final BlockEntityType<LooperBlockEntity> LOOPER = register("looper",
-         BlockEntityType.Builder.of(
+         FabricBlockEntityTypeBuilder.create(
              LooperBlockEntity::new, ModBlocks.LOOPER
          ).build(null)
      );
 
     public static final BlockEntityType<ModInstrumentBlockEntity> INSTRUMENT_BE = register("instrument_be",
-        BlockEntityType.Builder.of(ModInstrumentBlockEntity::new,
+        FabricBlockEntityTypeBuilder.create(ModInstrumentBlockEntity::new,
             ModBlocks.KEYBOARD, ModBlocks.KEYBOARD_STAND
         )
         .build(null)

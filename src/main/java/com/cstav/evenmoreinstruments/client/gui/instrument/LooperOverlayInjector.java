@@ -15,7 +15,7 @@
  import net.minecraft.client.gui.screens.Screen;
  import net.minecraft.client.player.LocalPlayer;
  import net.minecraft.core.BlockPos;
- import net.minecraft.network.chat.Component;
+ import net.minecraft.network.chat.TranslatableComponent;
  import net.minecraft.world.InteractionHand;
  import net.minecraft.world.entity.player.Player;
  import net.minecraft.world.item.ItemStack;
@@ -53,7 +53,7 @@
 
          ScreenExtensions.getExtensions(screen).fabric_getButtons().add(
              recordBtn = new Button((screen.width - REC_BTN_WIDTH) / 2, 5, REC_BTN_WIDTH, 20,
-                 Component.translatable("button.evenmoreinstruments.record"),
+                 new TranslatableComponent("button.evenmoreinstruments.record"),
                  LooperOverlayInjector::onRecordPress
              )
          );
@@ -92,7 +92,7 @@
              removeRecordButton();
              screen = null;
          } else
-             btn.setMessage(Component.translatable("button.evenmoreinstruments.stop"));
+             btn.setMessage(new TranslatableComponent("button.evenmoreinstruments.stop"));
 
          isRecording = !isRecording;
          ModPacketHandler.sendToServer(new LooperRecordStatePacket(isRecording, hand));
