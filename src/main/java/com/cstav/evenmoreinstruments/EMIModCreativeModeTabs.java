@@ -1,7 +1,6 @@
 package com.cstav.evenmoreinstruments;
 
 import com.cstav.evenmoreinstruments.item.ModItems;
-
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,7 +18,7 @@ public abstract class EMIModCreativeModeTabs {
             .build()
     ;
 
-    public static void regsiter() {
+    public static void register() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             new ResourceLocation(Main.MODID, "instrument_accessories_tab"), INSTRUMENT_ACCESSORY_TAB
         );
