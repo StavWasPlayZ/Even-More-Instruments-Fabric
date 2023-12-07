@@ -25,6 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+
 public class ModItems {
     // How can I declare my mod to load only after another mod?
     public static void load() {}

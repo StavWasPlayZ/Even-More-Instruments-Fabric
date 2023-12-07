@@ -1,7 +1,5 @@
 package com.cstav.evenmoreinstruments.client;
 
-import java.util.List;
-
 import com.cstav.evenmoreinstruments.Main;
 import com.cstav.evenmoreinstruments.client.gui.instrument.LooperOverlayInjector;
 import com.cstav.evenmoreinstruments.client.gui.instrument.guitar.GuitarScreen;

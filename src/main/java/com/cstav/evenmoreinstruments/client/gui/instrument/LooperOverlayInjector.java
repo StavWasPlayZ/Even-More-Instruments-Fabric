@@ -21,8 +21,6 @@
  import net.minecraft.world.item.ItemStack;
  import net.minecraft.world.level.block.entity.BlockEntity;
 
- import java.util.Optional;
-
  @Environment(EnvType.CLIENT)
  public class LooperOverlayInjector {
      private static final int REC_BTN_WIDTH = 120;

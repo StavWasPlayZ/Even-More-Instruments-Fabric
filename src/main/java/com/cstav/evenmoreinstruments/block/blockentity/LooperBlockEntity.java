@@ -10,7 +10,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.slf4j.Logger;
 
-import com.cstav.evenmoreinstruments.block.IDoubleBlock;
 import com.cstav.evenmoreinstruments.block.LooperBlock;
 import com.cstav.evenmoreinstruments.block.ModBlocks;
 import com.cstav.evenmoreinstruments.gamerule.ModGameRules;
@@ -26,7 +25,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;

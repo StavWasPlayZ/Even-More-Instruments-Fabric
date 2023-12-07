@@ -11,7 +11,6 @@ import com.cstav.genshinstrument.sound.NoteSound;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
 @Environment(EnvType.CLIENT)
