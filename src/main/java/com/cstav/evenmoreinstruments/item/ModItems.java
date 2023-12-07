@@ -8,14 +8,10 @@ import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
 import com.cstav.evenmoreinstruments.networking.packet.ModOpenInstrumentPacket;
 import com.cstav.genshinstrument.ModCreativeModeTabs;
 import com.cstav.genshinstrument.item.InstrumentItem;
-import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
@@ -27,15 +23,6 @@ import java.util.Map;
 public class ModItems {
     // How can I declare my mod to load only after another mod?
     public static void load() {}
-
-    private static void defaultInstrumentsTabs(final Item item) {
-        addToTab(item, ModCreativeModeTabs.INSTRUMENTS_TAB);
-        addToTab(item, CreativeModeTabs.BUILDING_BLOCKS);
-    }
-    private static void defaultInstrumentBlocksTab(final Item item) {
-        defaultInstrumentsTabs(item);
-        addToTab(item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
-    }
 
 
     public static final Item
@@ -62,23 +49,15 @@ public class ModItems {
         )),
 
 
-        LOOPER = registerBlockItem(ModBlocks.LOOPER, (item) -> {
-            addToTab(item, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB);
-            addToTab(item, CreativeModeTabs.FUNCTIONAL_BLOCKS);
-            addToTab(item, CreativeModeTabs.REDSTONE_BLOCKS);
-        }),
-        LOOPER_ADAPTER = register("looper_adapter", new LooperAdapterItem(new Properties()), (item) -> {
-            addToTab(item, CreativeModeTabs.REDSTONE_BLOCKS);
-            addToTab(item, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB);
-        }),
+        LOOPER = registerBlockItem(ModBlocks.LOOPER, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB),
+        LOOPER_ADAPTER = register("looper_adapter", new LooperAdapterItem(new Properties()
+            .tab(EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB)
+        )),
 
         KEYBOARD = register("keyboard",
-            new KeyboardBlockItem(ModBlocks.KEYBOARD, new Properties()),
-            ModItems::defaultInstrumentBlocksTab
+            new KeyboardBlockItem(ModBlocks.KEYBOARD, new Properties().tab(ModCreativeModeTabs.INSTRUMENTS_TAB))
         ),
-        KEYBOARD_STAND = registerBlockItem(ModBlocks.KEYBOARD_STAND, (item) ->
-            addToTab(item, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB)
-        )
+        KEYBOARD_STAND = registerBlockItem(ModBlocks.KEYBOARD_STAND, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB)
     ;
 
     public static final Map<NoteBlockInstrument, Item> NOTEBLOCK_INSTRUMENTS = initNoteBlockInstruments();
@@ -88,9 +67,6 @@ public class ModItems {
         final HashMap<NoteBlockInstrument, Item> result = new HashMap<>(instruments.length);
 
         for (final NoteBlockInstrument instrument : instruments) {
-            if (!instrument.isTunable())
-                continue;
-
             result.put(instrument,
                 register(NoteBlockInstrumentItem.getId(instrument),
                     new NoteBlockInstrumentItem(instrument)
@@ -105,29 +81,15 @@ public class ModItems {
     // private static RegistryObject<Item> registerBlockItem(final RegistryObject<Block> block) {
     //     return registerBlockItem(block, DEFAULT_INSTRUMENT_BLOCK_TABS);
     // }
-    private static Item registerBlockItem(Block block, Consumer<Item> tabAdder) {
-        return register(BuiltInRegistries.BLOCK.getKey(block).getPath(),
-            new BlockItem(block, new Properties())
-        , tabAdder);
+    private static Item registerBlockItem(Block block, CreativeModeTab tab) {
+        return register(Registry.BLOCK.getKey(block).getPath(),
+            new BlockItem(block, new Properties().tab(tab))
+        );
     }
-    
-    private static Item register(String name, Item item, Consumer<Item> tabAdder) {
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Main.MODID, name), item);
-        
-        tabAdder.accept(item);
 
-        return item;
-    }
     private static Item register(String name, Item item) {
-        return register(name, item, ModItems::defaultInstrumentsTabs);
-    }
-
-
-    private static void addToTab(final Item item, CreativeModeTab tab) {
-        ItemGroupEvents.MODIFY_ENTRIES_ALL.register((_tab, entries) -> {
-            if (tab.equals(_tab))
-                entries.accept(item);
-        });
+        Registry.register(Registry.ITEM, new ResourceLocation(Main.MODID, name), item);
+        return item;
     }
 
 }

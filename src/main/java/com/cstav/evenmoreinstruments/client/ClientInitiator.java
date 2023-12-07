@@ -11,12 +11,12 @@ import com.cstav.evenmoreinstruments.client.gui.instrument.violin.ViolinScreen;
 import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
 import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.util.CommonUtil;
-import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
 @Environment(EnvType.CLIENT)
@@ -35,7 +35,7 @@ public class ClientInitiator implements ClientModInitializer {
         
         KeyMappings.load();
 
-        ForgeConfigRegistry.INSTANCE.register(Main.MODID, ModConfig.Type.CLIENT, ModClientConfigs.CONFIGS);
+        ModLoadingContext.registerConfig(Main.MODID, ModConfig.Type.CLIENT, ModClientConfigs.CONFIGS);
         CommonUtil.loadClasses(LOAD_ME);
 
         ScreenEvents.AFTER_INIT.register(LooperOverlayInjector::onScreenInit);

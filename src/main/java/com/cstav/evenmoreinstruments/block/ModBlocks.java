@@ -2,7 +2,6 @@ package com.cstav.evenmoreinstruments.block;
 
 import com.cstav.evenmoreinstruments.Main;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +25,7 @@ public class ModBlocks {
 
 
     public static Block register(final String name, final Block block) {
-        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(Main.MODID, name), block);
+        Registry.register(Registry.BLOCK, new ResourceLocation(Main.MODID, name), block);
         return block;
     }
 
