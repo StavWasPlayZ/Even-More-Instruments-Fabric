@@ -95,9 +95,6 @@ public class KeyboardBlock extends AbstractInstrumentBlock implements IDoubleBlo
         if (pLevel.isClientSide)
             return;
 
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-
-
         final BlockPos sideBlock = getOtherBlock(pState, pPos, pLevel);
         if (sideBlock == null)
             return;
@@ -107,6 +104,8 @@ public class KeyboardBlock extends AbstractInstrumentBlock implements IDoubleBlo
         , 1|2|4);
         pLevel.blockUpdated(pPos, Blocks.AIR);
         pState.updateNeighbourShapes(pLevel, pPos, 1|2|4);
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
 
