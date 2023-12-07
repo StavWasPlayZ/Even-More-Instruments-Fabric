@@ -7,7 +7,6 @@ import com.cstav.evenmoreinstruments.util.CommonUtil;
 import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -105,6 +104,8 @@ public class KeyboardBlock extends AbstractInstrumentBlock implements IDoubleBlo
         , 1|2|4);
         pLevel.blockUpdated(pPos, Blocks.AIR);
         pState.updateNeighbourShapes(pLevel, pPos, 1|2|4);
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
 
