@@ -64,9 +64,9 @@ dependencies {
 		exclude group: "net.fabricmc", module: "fabric-loader"
 	}
 
-	modCompileOnly ("com.terraformersmc:modmenu:${project.modmenu_version}") {
-		exclude group: "net.fabricmc", module: "fabric-loader"
-	}
+    modRuntimeOnly ("com.terraformersmc:modmenu:${project.modmenu_version}") {
+        exclude group: "net.fabricmc", module: "fabric-loader"
+    }
 	
 
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
