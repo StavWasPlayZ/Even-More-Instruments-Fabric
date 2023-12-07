@@ -60,9 +60,13 @@ dependencies {
 
 //	modImplementation "maven.modrinth:genshin-instruments:${project.genshinstrument_version}"
 	modImplementation "idc:genshinstrument-fabric:${project.minecraft_version}-${project.genshinstrument_version}"
-	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_port_version}"
+	modApi ("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_port_version}") {
+		exclude group: "net.fabricmc", module: "fabric-loader"
+	}
 
-	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modCompileOnly ("com.terraformersmc:modmenu:${project.modmenu_version}") {
+		exclude group: "net.fabricmc", module: "fabric-loader"
+	}
 	
 
 	// Uncomment the following line to enable the deprecated Fabric API modules. 

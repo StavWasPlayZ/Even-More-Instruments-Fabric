@@ -9,12 +9,13 @@ import com.cstav.evenmoreinstruments.client.gui.instrument.saxophone.SaxophoneSc
 import com.cstav.evenmoreinstruments.client.gui.instrument.trombone.TromboneScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.violin.ViolinScreen;
 import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
-
+import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.util.CommonUtil;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -30,7 +31,7 @@ public class ClientInitiator implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ModPacketHandler.registerClientPackets();
+        registerClientPackets();
         
         KeyMappings.load();
 
@@ -38,6 +39,19 @@ public class ClientInitiator implements ClientModInitializer {
         CommonUtil.loadClasses(LOAD_ME);
 
         ScreenEvents.AFTER_INIT.register(LooperOverlayInjector::onScreenInit);
+    }
+
+
+    public static void registerClientPackets() {
+        for (final Class<IModPacket> packetClass : ModPacketHandler.S2C_PACKETS) {
+
+            ClientPlayNetworking.registerGlobalReceiver(
+                IModPacket.getChannelName(packetClass),
+                (client, handler, buf, sender) ->
+                    ModPacketHandler.handlePacket(client.player, sender, buf, packetClass, client::execute)
+            );
+
+        }
     }
     
 }
