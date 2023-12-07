@@ -107,7 +107,7 @@
          final BlockPos instrumentPos = InstrumentEntityData.getBlockPos(player);
 
          return (instrumentPos == null) ? null
-             : player.level().getBlockEntity(instrumentPos);
+             : player.getLevel().getBlockEntity(instrumentPos);
      }
 
 
