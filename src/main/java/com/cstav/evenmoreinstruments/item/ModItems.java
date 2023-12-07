@@ -1,8 +1,5 @@
 package com.cstav.evenmoreinstruments.item;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.cstav.evenmoreinstruments.EMIModCreativeModeTabs;
 import com.cstav.evenmoreinstruments.Main;
 import com.cstav.evenmoreinstruments.block.ModBlocks;
@@ -11,7 +8,6 @@ import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
 import com.cstav.evenmoreinstruments.networking.packet.ModOpenInstrumentPacket;
 import com.cstav.genshinstrument.ModCreativeModeTabs;
 import com.cstav.genshinstrument.item.InstrumentItem;
-
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
@@ -26,13 +22,16 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModItems {
     // How can I declare my mod to load only after another mod?
     public static void load() {}
 
     private static void defaultInstrumentsTabs(final Item item) {
         addToTab(item, ModCreativeModeTabs.INSTRUMENTS_TAB);
-        addToTab(item, CreativeModeTabs.BUILDING_BLOCKS);
+        addToTab(item, CreativeModeTabs.TOOLS_AND_UTILITIES);
     }
     private static void defaultInstrumentBlocksTab(final Item item) {
         defaultInstrumentsTabs(item);
