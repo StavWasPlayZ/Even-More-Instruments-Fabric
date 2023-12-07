@@ -21,11 +21,12 @@ repositories {
 			name = 'ParchmentMC'
 			url = 'https://maven.parchmentmc.org'
 		}
-		maven {
-			name = 'CurseMaven'
-			url "https://cursemaven.com"
-		}
 		maven { url 'https://maven.terraformersmc.com/releases/' }
+
+		maven {
+			name = "Fuzs Mod Resources"
+			url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+		}
 	}
 
 	flatDir {
@@ -59,7 +60,7 @@ dependencies {
 
 //	modImplementation "maven.modrinth:genshin-instruments:${project.genshinstrument_version}"
 	modImplementation "idc:genshinstrument-fabric:${project.minecraft_version}-${project.genshinstrument_version}"
-	modImplementation "curse.maven:forge-config-api-port-fabric-547434:${project.forge_config_api_port_version}"
+	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_port_version}"
 
 	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 	
