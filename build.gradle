@@ -62,7 +62,7 @@ dependencies {
 	modImplementation "idc:genshinstrument-fabric:${project.minecraft_version}-${project.genshinstrument_version}"
 	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_port_version}"
 
-	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 	
 
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
