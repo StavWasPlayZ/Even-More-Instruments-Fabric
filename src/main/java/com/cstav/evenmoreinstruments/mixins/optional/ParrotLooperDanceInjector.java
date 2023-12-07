@@ -38,7 +38,7 @@ public abstract class ParrotLooperDanceInjector extends Entity {
     @Inject(at = @At(value = "HEAD"), method = "aiStep()V")
     private void aiStepHead(final CallbackInfo info) {
         jukeboxBefore = jukebox;
-        isLooper = (jukebox != null) && level().getBlockState(jukebox).is(ModBlocks.LOOPER);
+        isLooper = (jukebox != null) && getLevel().getBlockState(jukebox).is(ModBlocks.LOOPER);
 
         partiedBefore = partyParrot;
     }

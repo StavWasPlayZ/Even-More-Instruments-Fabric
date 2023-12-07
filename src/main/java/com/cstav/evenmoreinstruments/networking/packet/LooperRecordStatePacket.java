@@ -58,13 +58,13 @@
      private void handleBlock(final ServerPlayer player) {
          final BlockPos instrumentBlockPos = InstrumentEntityData.getBlockPos(player);
 
-         final BlockEntity instrumentBlock = player.level().getBlockEntity(instrumentBlockPos);
+         final BlockEntity instrumentBlock = player.getLevel().getBlockEntity(instrumentBlockPos);
          final CompoundTag looperTag = LooperUtil.looperTag(instrumentBlock);
 
          if (ServerUtil.isMaliciousPos(player, looperTag))
              return;
 
-         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.level(), instrumentBlock);
+         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.getLevel(), instrumentBlock);
          changeRecordingState(player, looperTag, lbe, () -> LooperUtil.remLooperTag(instrumentBlock));
 
          ModPacketHandler.sendToClient(new SyncModTagPacket(Main.modTag(instrumentBlock), instrumentBlockPos), player);
@@ -77,7 +77,7 @@
              return;
 
 
-         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.level(), instrumentItem);
+         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.getLevel(), instrumentItem);
          changeRecordingState(player, looperTag, lbe, () -> LooperUtil.remLooperTag(instrumentItem));
      }
 
@@ -89,7 +89,7 @@
              lbe.lock();
 
              final BlockState blockState = lbe.getBlockState();
-             final Level level = player.level();
+             final Level level = player.getLevel();
 
              if (!(blockState.getBlock() instanceof LooperBlock looperBlock))
                  return;

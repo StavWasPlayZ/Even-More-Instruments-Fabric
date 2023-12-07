@@ -16,6 +16,7 @@ import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Cons
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -126,20 +127,9 @@ public class ModItems {
 
     private static void addToTab(final Item item, CreativeModeTab tab) {
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((_tab, entries) -> {
-            if (getKey(tab).equals(getKey(_tab)))
+            if (tab.equals(_tab))
                 entries.accept(item);
         });
-    }
-    private static void addToTab(final Item item, final ResourceKey<CreativeModeTab> tabKey) {
-        ItemGroupEvents.MODIFY_ENTRIES_ALL.register((tab, entries) -> {
-            if (getKey(tab).equals(tabKey))
-                entries.accept(item);
-        });
-    }
-
-
-    private static ResourceKey<CreativeModeTab> getKey(final CreativeModeTab tab) {
-        return BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(tab).orElseThrow();
     }
 
 }

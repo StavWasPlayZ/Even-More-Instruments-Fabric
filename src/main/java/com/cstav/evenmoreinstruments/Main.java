@@ -30,7 +30,6 @@ public class Main implements ModInitializer {
     @Override
     public void onInitialize() {
         ModPacketHandler.registerServerPackets();
-        EMIModCreativeModeTabs.regsiter();
 
         ModSounds.load();
         ModGameRules.load();

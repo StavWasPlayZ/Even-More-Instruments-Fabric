@@ -13,16 +13,10 @@ import net.minecraft.world.item.ItemStack;
 public abstract class EMIModCreativeModeTabs {
 
     public static final CreativeModeTab
-        INSTRUMENT_ACCESSORY_TAB = FabricItemGroup.builder()
+        INSTRUMENT_ACCESSORY_TAB = FabricItemGroup.builder(new ResourceLocation(Main.MODID, "instrument_accessories_tab"))
             .icon(() -> new ItemStack(ModItems.KEYBOARD_STAND))
             .title(Component.translatable("itemGroup.evenmoreinstruments.instrument_accessories"))
             .build()
     ;
-
-    public static void regsiter() {
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
-            new ResourceLocation(Main.MODID, "instrument_accessories_tab"), INSTRUMENT_ACCESSORY_TAB
-        );
-    }
 
 }
