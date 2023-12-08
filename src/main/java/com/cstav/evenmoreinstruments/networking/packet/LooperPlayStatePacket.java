@@ -35,7 +35,7 @@ public class LooperPlayStatePacket implements IModPacket {
     @SuppressWarnings("resource")
     @Override
     public void handle(Player player, PacketSender responseSender) {
-        final Level level = Minecraft.getInstance().player.level();
+        final Level level = Minecraft.getInstance().player.getLevel();
 
         // Parrots go brrrr
         for (final LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, (new AABB(blockPos)).inflate(3)))
