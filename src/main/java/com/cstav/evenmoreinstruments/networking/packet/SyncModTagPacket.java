@@ -36,7 +36,7 @@ public class SyncModTagPacket implements IModPacket {
     @SuppressWarnings("resource")
     @Override
     public void handle(Player player, PacketSender responseSender) {
-        final BlockEntity be = Minecraft.getInstance().player.level().getBlockEntity(pos);
+        final BlockEntity be = Minecraft.getInstance().player.getLevel().getBlockEntity(pos);
 
         if (be != null)
             ((InjectedBlockEntity) be).setModTag(modTag);

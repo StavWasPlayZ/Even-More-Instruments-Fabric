@@ -15,7 +15,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -46,7 +46,7 @@ public class LooperOverlayInjector {
             ModPacketHandler.sendToServer(new DoesLooperExistPacket(hand));
         } else {
             final BlockPos instrumentBlockPos = InstrumentEntityData.getBlockPos(player);
-            final BlockEntity instrumentBE = player.level().getBlockEntity(instrumentBlockPos);
+            final BlockEntity instrumentBE = player.getLevel().getBlockEntity(instrumentBlockPos);
 
             if (!LooperUtil.hasLooperTag(instrumentBE))
                 return;
@@ -57,13 +57,10 @@ public class LooperOverlayInjector {
         LooperOverlayInjector.screen = instrumentScreen;
 
         ScreenExtensions.getExtensions(instrumentScreen).fabric_getButtons().add(
-            recordBtn = Button.builder(
-                    Component.translatable("button.evenmoreinstruments.record"),
-                    LooperOverlayInjector::onRecordPress
-                )
-                .width(REC_BTN_WIDTH)
-                .pos((instrumentScreen.width - REC_BTN_WIDTH) / 2, 5)
-                .build()
+            recordBtn = new Button((screen.width - REC_BTN_WIDTH) / 2, 5, REC_BTN_WIDTH, 20,
+                new TranslatableComponent("button.evenmoreinstruments.record"),
+                LooperOverlayInjector::onRecordPress
+            )
         );
 
         ScreenEvents.remove(instrumentScreen).register(LooperOverlayInjector::onScreenClose);
@@ -109,7 +106,7 @@ public class LooperOverlayInjector {
             removeRecordButton();
             screen = null;
         } else
-            btn.setMessage(Component.translatable("button.evenmoreinstruments.stop"));
+            btn.setMessage(new TranslatableComponent("button.evenmoreinstruments.stop"));
 
         isRecording = !isRecording;
         ModPacketHandler.sendToServer(new LooperRecordStatePacket(isRecording, hand));
@@ -119,7 +116,7 @@ public class LooperOverlayInjector {
         final BlockPos instrumentPos = InstrumentEntityData.getBlockPos(player);
 
         return (instrumentPos == null) ? null
-            : player.level().getBlockEntity(instrumentPos);
+            : player.getLevel().getBlockEntity(instrumentPos);
     }
 
 
