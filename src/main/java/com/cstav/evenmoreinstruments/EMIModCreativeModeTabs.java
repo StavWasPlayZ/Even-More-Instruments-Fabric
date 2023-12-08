@@ -12,7 +12,7 @@ public abstract class EMIModCreativeModeTabs {
     public static final CreativeModeTab
         INSTRUMENT_ACCESSORY_TAB = FabricItemGroup.builder(new ResourceLocation(Main.MODID, "instrument_accessories_tab"))
             .icon(() -> new ItemStack(ModItems.KEYBOARD_STAND))
-            .title(Component.translatable("itemGroup.evenmoreinstruments.instrument_accessories"))
+            .title(Component.translatable("itemGroup.evenmoreinstruments.instrument_accessories_tab"))
             .build()
     ;
 
