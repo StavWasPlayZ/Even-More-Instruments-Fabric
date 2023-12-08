@@ -47,7 +47,7 @@ public class DoesLooperExistPacket implements IModPacket {
     @Override
     public void handle(Player lPlayer, PacketSender responseSender) {
         final ServerPlayer player = (ServerPlayer) lPlayer;
-        final Level level = player.level();
+        final Level level = player.getLevel();
 
         LooperBlockEntity looperBE;
 
