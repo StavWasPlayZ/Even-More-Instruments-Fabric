@@ -1,14 +1,13 @@
 package com.cstav.evenmoreinstruments.networking;
 
-import java.util.List;
-
 import com.cstav.evenmoreinstruments.networking.packet.*;
 import com.cstav.genshinstrument.networking.IModPacket;
-
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
+
+import java.util.List;
 
 
 // Copy pasta
@@ -19,11 +18,11 @@ public class ModPacketHandler {
         S2C_PACKETS = List.of(new Class[] {
             ModOpenInstrumentPacket.class, OpenNoteBlockInstrumentPacket.class,
 
-             LooperPlayStatePacket.class, LooperRemovedPacket.class,
-             SyncModTagPacket.class
+            LooperPlayStatePacket.class, LooperRemovedPacket.class,
+            SyncModTagPacket.class
         }),
         C2S_PACKETS = List.of(new Class[] {
-             LooperRecordStatePacket.class, UpdateLooperRemovedForInstrument.class
+            LooperRecordStatePacket.class, DoesLooperExistPacket.class
         })
     ;
 

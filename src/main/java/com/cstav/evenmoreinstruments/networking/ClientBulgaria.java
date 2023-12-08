@@ -9,8 +9,8 @@ import com.cstav.evenmoreinstruments.client.gui.instrument.LooperOverlayInjector
  */
 public class ClientBulgaria {
 
-    public static void handleLooperRemoved() {
-        LooperOverlayInjector.removeRecordButton();
+    public static void handleLooperRemovedResponse() {
+        LooperOverlayInjector.handleLooperRemoved();
     }
 
 }
