@@ -18,11 +18,11 @@ public class ModPacketHandler {
         S2C_PACKETS = List.of(new Class[] {
             ModOpenInstrumentPacket.class, OpenNoteBlockInstrumentPacket.class,
 
-            LooperPlayStatePacket.class, DoesLooperExistS2CPacket.class,
+            LooperPlayStatePacket.class, LooperRemovedPacket.class,
             SyncModTagPacket.class
         }),
         C2S_PACKETS = List.of(new Class[] {
-            LooperRecordStatePacket.class, DoesLooperExistC2SPacket.class
+            LooperRecordStatePacket.class, DoesLooperExistPacket.class
         })
     ;
 

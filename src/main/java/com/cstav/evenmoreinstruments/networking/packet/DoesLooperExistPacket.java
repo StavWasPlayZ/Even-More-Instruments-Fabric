@@ -19,23 +19,23 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.Optional;
 
 
-public class DoesLooperExistC2SPacket implements IModPacket {
+public class DoesLooperExistPacket implements IModPacket {
     public static final int MAX_RECORD_DIST = 8;
 
     final Optional<InteractionHand> hand;
 
-    public DoesLooperExistC2SPacket(final InteractionHand hand) {
+    public DoesLooperExistPacket(final InteractionHand hand) {
         this.hand = Optional.of(hand);
     }
 
     /**
      * Counts this update request as a request for a block instrument
      */
-    public DoesLooperExistC2SPacket() {
+    public DoesLooperExistPacket() {
         this.hand = Optional.empty();
     }
 
-    public DoesLooperExistC2SPacket(FriendlyByteBuf buf) {
+    public DoesLooperExistPacket(FriendlyByteBuf buf) {
         hand = buf.readOptional((fbb) -> fbb.readEnum(InteractionHand.class));
     }
 
@@ -74,7 +74,8 @@ public class DoesLooperExistC2SPacket implements IModPacket {
 
         }
 
-        ModPacketHandler.sendToClient(new DoesLooperExistS2CPacket(looperBE != null), player);
+        if (looperBE == null)
+            ModPacketHandler.sendToClient(new LooperRemovedPacket(), player);
     }
 
 }

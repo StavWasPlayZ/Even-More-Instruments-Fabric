@@ -9,8 +9,8 @@ import com.cstav.evenmoreinstruments.client.gui.instrument.LooperOverlayInjector
  */
 public class ClientBulgaria {
 
-    public static void handleLooperRemovedResponse(final boolean looperExists) {
-        LooperOverlayInjector.handleLooperExistsResponse(looperExists);
+    public static void handleLooperRemovedResponse() {
+        LooperOverlayInjector.handleLooperRemoved();
     }
 
 }

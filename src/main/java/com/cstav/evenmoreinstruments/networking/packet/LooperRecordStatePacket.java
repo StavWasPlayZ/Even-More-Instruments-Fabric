@@ -66,7 +66,7 @@ public class LooperRecordStatePacket implements IModPacket {
 
         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.level(), instrumentBlock);
         if (lbe == null) {
-            ModPacketHandler.sendToClient(new DoesLooperExistS2CPacket(false), player);
+            ModPacketHandler.sendToClient(new LooperRemovedPacket(), player);
             return;
         }
 
@@ -84,7 +84,7 @@ public class LooperRecordStatePacket implements IModPacket {
 
         final LooperBlockEntity lbe = LooperUtil.getFromInstrument(player.level(), instrumentItem);
         if (lbe == null) {
-            ModPacketHandler.sendToClient(new DoesLooperExistS2CPacket(false), player);
+            ModPacketHandler.sendToClient(new LooperRemovedPacket(), player);
             return;
         }
 
