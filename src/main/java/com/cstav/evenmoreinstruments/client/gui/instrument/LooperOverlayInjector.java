@@ -1,8 +1,8 @@
  package com.cstav.evenmoreinstruments.client.gui.instrument;
 
  import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
+ import com.cstav.evenmoreinstruments.networking.packet.DoesLooperExistC2SPacket;
  import com.cstav.evenmoreinstruments.networking.packet.LooperRecordStatePacket;
- import com.cstav.evenmoreinstruments.networking.packet.UpdateLooperRemovedForInstrument;
  import com.cstav.evenmoreinstruments.util.LooperUtil;
  import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
  import com.cstav.genshinstrument.util.InstrumentEntityData;
@@ -39,29 +39,23 @@
          if (InstrumentEntityData.isItem(player)) {
              final InteractionHand hand = InstrumentEntityData.getHand(player);
              final ItemStack instrumentItem = player.getItemInHand(hand);
-            
-             // Send an update request upon opening an item instrument's screen
-             ModPacketHandler.sendToServer(new UpdateLooperRemovedForInstrument(hand));
 
              if (!LooperUtil.hasLooperTag(instrumentItem))
                  return;
+            
+             // Send an update request upon opening an item instrument's screen
+             ModPacketHandler.sendToServer(new DoesLooperExistC2SPacket(hand));
          } else {
-             ModPacketHandler.sendToServer(new UpdateLooperRemovedForInstrument());
+             ModPacketHandler.sendToServer(new DoesLooperExistC2SPacket());
          }
 
          LooperOverlayInjector.screen = instrumentScreen;
-
-         ScreenExtensions.getExtensions(screen).fabric_getButtons().add(
-             recordBtn = Button.builder(
-                 Component.translatable("button.evenmoreinstruments.record"),
-                 LooperOverlayInjector::onRecordPress
-             )
-             .width(REC_BTN_WIDTH)
-             .pos((screen.width - REC_BTN_WIDTH) / 2, 5)
-             .build()
-         );
-
-         ScreenEvents.remove(instrumentScreen).register(LooperOverlayInjector::onScreenClose);
+     }
+     public static void handleLooperExistsResponse(final boolean looperExists) {
+         if (looperExists)
+             LooperOverlayInjector.addRecordButton();
+         else
+             screen = null;
      }
 
      public static void onScreenClose(final Screen screen) {
@@ -115,5 +109,21 @@
 
          ScreenExtensions.getExtensions(screen)
              .fabric_getButtons().remove(recordBtn);
+     }
+     public static void addRecordButton() {
+         if (screen == null)
+             return;
+
+         ScreenExtensions.getExtensions(screen).fabric_getButtons().add(
+             recordBtn = Button.builder(
+                     Component.translatable("button.evenmoreinstruments.record"),
+                     LooperOverlayInjector::onRecordPress
+                 )
+                 .width(REC_BTN_WIDTH)
+                 .pos((screen.width - REC_BTN_WIDTH) / 2, 5)
+                 .build()
+         );
+
+         ScreenEvents.remove(screen).register(LooperOverlayInjector::onScreenClose);
      }
  }
