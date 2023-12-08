@@ -30,7 +30,7 @@ public class ModItems {
 
     private static void defaultInstrumentsTabs(final Item item) {
         addToTab(item, ModCreativeModeTabs.INSTRUMENTS_TAB);
-        addToTab(item, CreativeModeTabs.BUILDING_BLOCKS);
+        addToTab(item, CreativeModeTabs.TOOLS_AND_UTILITIES);
     }
     private static void defaultInstrumentBlocksTab(final Item item) {
         defaultInstrumentsTabs(item);
