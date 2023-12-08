@@ -77,9 +77,14 @@ public class LooperOverlayInjector {
         if (!isRecording || (LooperOverlayInjector.screen != screen))
             return;
 
+        final Player player = Minecraft.getInstance().player;
+
         ModPacketHandler.sendToServer(
             new LooperRecordStatePacket(false,
-                InstrumentEntityData.getHand(Minecraft.getInstance().player))
+                InstrumentEntityData.isItem(player)
+                    ? InstrumentEntityData.getHand(player)
+                    : null
+            )
         );
 
         isRecording = false;
