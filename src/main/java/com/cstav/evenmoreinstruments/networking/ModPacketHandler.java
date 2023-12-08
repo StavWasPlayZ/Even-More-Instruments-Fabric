@@ -13,6 +13,8 @@ import net.minecraft.world.entity.player.Player;
 import java.util.List;
 import java.util.function.Consumer;
 
+import java.util.List;
+
 
 // Copy pasta
 public class ModPacketHandler {
@@ -22,11 +24,11 @@ public class ModPacketHandler {
         S2C_PACKETS = List.of(new Class[] {
             ModOpenInstrumentPacket.class, OpenNoteBlockInstrumentPacket.class,
 
-             LooperPlayStatePacket.class, LooperRemovedPacket.class,
-             SyncModTagPacket.class
+            LooperPlayStatePacket.class, LooperRemovedPacket.class,
+            SyncModTagPacket.class
         }),
         C2S_PACKETS = List.of(new Class[] {
-             LooperRecordStatePacket.class, UpdateLooperRemovedForInstrument.class
+            LooperRecordStatePacket.class, DoesLooperExistPacket.class
         })
     ;
 
