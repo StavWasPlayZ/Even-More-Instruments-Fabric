@@ -110,8 +110,10 @@
 
 
      public static void removeRecordButton() {
-         if (screen != null)
-             ScreenExtensions.getExtensions(screen)
-                 .fabric_getButtons().remove(recordBtn);
+         if (screen == null)
+             return;
+
+         ScreenExtensions.getExtensions(screen)
+             .fabric_getButtons().remove(recordBtn);
      }
  }
