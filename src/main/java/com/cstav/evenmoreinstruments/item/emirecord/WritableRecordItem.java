@@ -48,6 +48,6 @@ public class WritableRecordItem extends EMIRecordItem implements IDynamicStackSi
 
     @Override
     public int getMaxStackSize(ItemStack stack) {
-        return isBurned(stack) ? 1 : 64;
+        return isBurned(stack) ? 1 : 16;
     }
 }
