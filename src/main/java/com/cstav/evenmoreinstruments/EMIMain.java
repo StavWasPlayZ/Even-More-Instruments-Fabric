@@ -8,7 +8,7 @@ import com.cstav.evenmoreinstruments.item.ModItems;
 import com.cstav.evenmoreinstruments.item.crafting.ModRecipeSerializers;
 import com.cstav.evenmoreinstruments.item.emirecord.RecordRepository;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
-import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
+import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +27,7 @@ public class EMIMain implements ModInitializer {
     
     @Override
     public void onInitialize() {
-        ModPacketHandler.registerServerPackets();
+        EMIPacketHandler.registerServerPackets();
 
         ModSounds.load();
 

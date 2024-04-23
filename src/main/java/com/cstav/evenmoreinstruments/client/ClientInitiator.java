@@ -11,7 +11,7 @@ import com.cstav.evenmoreinstruments.client.gui.instrument.saxophone.SaxophoneSc
 import com.cstav.evenmoreinstruments.client.gui.instrument.shamisen.ShamisenScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.trombone.TromboneScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.violin.ViolinScreen;
-import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
+import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
 import com.cstav.genshinstrument.util.CommonUtil;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
@@ -33,7 +33,7 @@ public class ClientInitiator implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ModPacketHandler.registerClientPackets();
+        EMIPacketHandler.registerClientPackets();
         
         KeyMappings.load();
 

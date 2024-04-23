@@ -11,7 +11,7 @@ import java.util.List;
 
 
 // Copy pasta
-public class ModPacketHandler {
+public class EMIPacketHandler {
 
     @SuppressWarnings("unchecked")
     private static final List<Class<IModPacket>>
