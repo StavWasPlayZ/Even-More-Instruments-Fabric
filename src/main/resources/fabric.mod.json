@@ -21,7 +21,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.cstav.evenmoreinstruments.Main"
+			"com.cstav.evenmoreinstruments.EMIMain"
 		],
 		"client": [
 			"com.cstav.evenmoreinstruments.client.ClientInitiator"
@@ -32,7 +32,7 @@
 		"mixins.evenmoreinstruments.optional.json"
 	],
 	"depends": {
-		"genshinstrument": ">=3.4",
+		"genshinstrument": ">=3.4.1",
 
 		"fabricloader": ">=0.14.21",
 		"minecraft": "~1.20.1",

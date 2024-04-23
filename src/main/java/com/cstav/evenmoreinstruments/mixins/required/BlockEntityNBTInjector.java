@@ -1,6 +1,6 @@
 package com.cstav.evenmoreinstruments.mixins.required;
 
-import com.cstav.evenmoreinstruments.Main;
+import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,11 +28,11 @@ public class BlockEntityNBTInjector implements InjectedBlockEntity {
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
     protected void saveAdditionalInjector(CompoundTag tag, CallbackInfo ci) {
-        tag.put(Main.MODID, getModTag());
+        tag.put(EMIMain.MODID, getModTag());
     }
     @Inject(method = "load", at = @At("TAIL"))
     protected void loadInjector(CompoundTag tag, CallbackInfo ci) {
-        persistentData = tag.getCompound(Main.MODID);
+        persistentData = tag.getCompound(EMIMain.MODID);
     }
 
 }
