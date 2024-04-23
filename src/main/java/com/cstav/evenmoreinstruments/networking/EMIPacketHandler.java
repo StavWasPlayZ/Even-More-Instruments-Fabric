@@ -16,7 +16,7 @@ public class EMIPacketHandler {
     @SuppressWarnings("unchecked")
     private static final List<Class<IModPacket>>
         S2C_PACKETS = List.of(new Class[] {
-            ModOpenInstrumentPacket.class, OpenNoteBlockInstrumentPacket.class,
+            EMIOpenInstrumentPacket.class, OpenNoteBlockInstrumentPacket.class,
 
             LooperPlayStatePacket.class, LooperRemovedPacket.class,
             SyncModTagPacket.class
