@@ -1,5 +1,6 @@
 package com.cstav.evenmoreinstruments.item.partial.instrument;
 
+import com.cstav.genshinstrument.GICreativeModeTabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +15,7 @@ public class CreditableBlockInstrumentItem extends BlockItem implements Creditab
     private final String credit;
 
     public CreditableBlockInstrumentItem(Block pBlock, Properties pProperties, String credit) {
-        super(pBlock, pProperties);
+        super(pBlock, pProperties.tab(GICreativeModeTabs.INSTRUMENTS_TAB));
         this.credit = credit;
     }
 

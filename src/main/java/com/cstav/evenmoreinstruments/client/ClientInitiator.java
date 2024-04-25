@@ -11,9 +11,8 @@ import com.cstav.evenmoreinstruments.client.gui.instrument.saxophone.SaxophoneSc
 import com.cstav.evenmoreinstruments.client.gui.instrument.shamisen.ShamisenScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.trombone.TromboneScreen;
 import com.cstav.evenmoreinstruments.client.gui.instrument.violin.ViolinScreen;
-import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
-import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
+import com.cstav.genshinstrument.networking.IModPacket;
 import com.cstav.genshinstrument.util.CommonUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -49,12 +48,12 @@ public class ClientInitiator implements ClientModInitializer {
 
 
     public static void registerClientPackets() {
-        for (final Class<IModPacket> packetClass : ModPacketHandler.S2C_PACKETS) {
+        for (final Class<IModPacket> packetClass : EMIPacketHandler.S2C_PACKETS) {
 
             ClientPlayNetworking.registerGlobalReceiver(
                 IModPacket.getChannelName(packetClass),
                 (client, handler, buf, sender) ->
-                    ModPacketHandler.handlePacket(client.player, sender, buf, packetClass, client::execute)
+                    EMIPacketHandler.handlePacket(client.player, sender, buf, packetClass, client::execute)
             );
 
         }

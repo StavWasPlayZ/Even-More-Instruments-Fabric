@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,8 +33,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.ticks.ContainerSingleItem;
 import org.slf4j.Logger;
 
 import java.util.UUID;
@@ -41,7 +40,7 @@ import java.util.UUID;
 import static com.cstav.evenmoreinstruments.item.emirecord.BurnedRecordItem.BURNED_MEDIA_TAG;
 import static com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem.*;
 
-public class LooperBlockEntity extends BlockEntity implements ContainerSingleItem {
+public class LooperBlockEntity extends BlockEntity implements Clearable {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static final String
@@ -128,17 +127,16 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
 
     // Assuming for single container, slots irrelevant:
 
-    @Override
     public ItemStack getItem(int pSlot) {
         return recordIn;
     }
 
-    @Override
     public void setItem(int pSlot, ItemStack pStack) {
         if (!(pStack.getItem() instanceof EMIRecordItem recordItem))
             return;
 
-        recordIn = pStack.copyWithCount(1);
+        recordIn = pStack.copy();
+        recordIn.setCount(1);
         recordItem.onInsert(recordIn, this);
 
         updateChannel();
@@ -153,7 +151,6 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         setChanged();
     }
 
-    @Override
     public ItemStack removeItem(int pSlot, int pAmount) {
         if (!isRecordIn() || pAmount <= 0)
             return ItemStack.EMPTY;
@@ -174,21 +171,18 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
     }
 
     @Override
+    public void clearContent() {
+        removeItem(0, 1);
+    }
+
     public int getMaxStackSize() {
         return 1;
     }
 
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
-    }
-
-    @Override
     public boolean canPlaceItem(int pIndex, ItemStack pStack) {
         return (pStack.getItem() instanceof EMIRecordItem) && !isRecordIn();
     }
 
-    @Override
     public boolean canTakeItem(Container pTarget, int pIndex, ItemStack pStack) {
         return !isRecordIn();
     }
@@ -400,10 +394,17 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
                 recordData.remove(CHANNEL_TAG);
         }
 
-        Vec3 popVec = Vec3.atLowerCornerWithOffset(getBlockPos(), 0.5D, 1.01D, 0.5D)
-            .offsetRandom(getLevel().random, 0.7F);
+        // Random offset generator, JukeboxBlock#dropRecording
+        float offset = 0.7F;
+        double offX = (double)(getLevel().random.nextFloat() * offset) + (double)0.15F;
+        double offY = (double)(getLevel().random.nextFloat() * offset) + (double)0.06F + 0.6D;
+        double offZ = (double)(getLevel().random.nextFloat() * offset) + (double)0.15F;
 
-        ItemEntity itementity = new ItemEntity(getLevel(), popVec.x(), popVec.y(), popVec.z(), recordIn);
+        final BlockPos pos = getBlockPos();
+        ItemEntity itementity = new ItemEntity(getLevel(),
+            pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ,
+            recordIn
+        );
         itementity.setDefaultPickUpDelay();
         getLevel().addFreshEntity(itementity);
 
@@ -462,7 +463,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         if (!LooperRecordEntityData.isRecording(player))
             return;
 
-        player.level()
+        player.getLevel()
             .getBlockEntity(LooperRecordEntityData.getLooperPos(player), ModBlockEntities.LOOPER)
             .filter((lbe) -> lbe.lockedBy.equals(player.getUUID()))
             .ifPresent((lbe) -> {

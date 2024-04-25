@@ -1,6 +1,7 @@
 package com.cstav.evenmoreinstruments.item.emirecord;
 
 import com.cstav.evenmoreinstruments.EMIMain;
+import com.cstav.genshinstrument.util.CommonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
@@ -70,6 +71,6 @@ public class RecordRepository {
     private static ResourceLocation stripFullPath(final ResourceLocation loc) {
         final String[] paths = loc.getPath().split("/");
         final String path = paths[paths.length - 1];
-        return loc.withPath(path.substring(0, path.lastIndexOf('.')));
+        return CommonUtil.withPath(loc, path.substring(0, path.lastIndexOf('.')));
     }
 }

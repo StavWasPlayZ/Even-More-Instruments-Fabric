@@ -38,7 +38,6 @@ public class EMIMain implements ModInitializer {
         ModBlockEntities.load();
         ModRecipeSerializers.load();
 
-        EMIModCreativeModeTabs.load();
         ModItems.load();
         RecordRepository.load();
     }

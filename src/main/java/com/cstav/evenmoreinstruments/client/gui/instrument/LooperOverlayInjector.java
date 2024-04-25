@@ -59,7 +59,7 @@ public class LooperOverlayInjector {
 
         LooperOverlayInjector.screen = instrumentScreen;
 
-        ScreenExtensions.getExtensions(instrumentScreen).fabric_getButtons().add(
+        Screens.getButtons(instrumentScreen).add(
             recordBtn = new Button((screen.width - REC_BTN_WIDTH) / 2, 5, REC_BTN_WIDTH, 20,
                 appendRecordKeyHint(Component.translatable("button.evenmoreinstruments.record")),
                 LooperOverlayInjector::onRecordPress

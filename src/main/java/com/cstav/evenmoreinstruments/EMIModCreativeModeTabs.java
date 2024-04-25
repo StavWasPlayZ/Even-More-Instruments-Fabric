@@ -10,7 +10,7 @@ public abstract class EMIModCreativeModeTabs {
 
     public static final CreativeModeTab
         INSTRUMENT_ACCESSORY_TAB = FabricItemGroupBuilder.build(
-            new ResourceLocation(Main.MODID, "instrument_accessories_tab"),
+            new ResourceLocation(EMIMain.MODID, "music_production_tab"),
                 () -> new ItemStack(ModItems.KEYBOARD_STAND)
         )
     ;

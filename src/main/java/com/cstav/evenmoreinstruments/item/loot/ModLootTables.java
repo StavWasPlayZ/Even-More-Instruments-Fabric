@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable.Builder;
+import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 
@@ -42,7 +42,7 @@ public class ModLootTables {
         LootTableEvents.MODIFY.register(ModLootTables::onLootTablesLoad);
     }
 
-    private static void onLootTablesLoad(ResourceManager resourceManager, LootDataManager lootDataManager,
+    private static void onLootTablesLoad(ResourceManager resourceManager, LootTables lootDataManager,
                                          ResourceLocation id, Builder tableBuilder, LootTableSource tableSource) {
         if (!TO_INJECT.containsKey(id))
             return;
