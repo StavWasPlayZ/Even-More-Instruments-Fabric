@@ -1,13 +1,13 @@
 package com.cstav.evenmoreinstruments.block;
 
-import com.cstav.evenmoreinstruments.Main;
-
+import com.cstav.evenmoreinstruments.EMIMain;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ModBlocks {
@@ -21,13 +21,16 @@ public class ModBlocks {
         KEYBOARD_STAND = register("keyboard_stand", new KeyboardStandBlock(
             Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
         )),
+        KOTO = register("koto", new KotoBlock(
+            Properties.of().noOcclusion().strength(.3f).sound(SoundType.WOOD)
+        )),
 
         LOOPER = register("looper", new LooperBlock(Properties.copy(Blocks.NOTE_BLOCK)))
     ;
 
 
     public static Block register(final String name, final Block block) {
-        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(Main.MODID, name), block);
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(EMIMain.MODID, name), block);
         return block;
     }
 

@@ -1,6 +1,7 @@
 package com.cstav.evenmoreinstruments.client.gui.instrument;
 
-import com.cstav.evenmoreinstruments.networking.ModPacketHandler;
+import com.cstav.evenmoreinstruments.client.KeyMappings;
+import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
 import com.cstav.evenmoreinstruments.networking.packet.DoesLooperExistPacket;
 import com.cstav.evenmoreinstruments.networking.packet.LooperRecordStatePacket;
 import com.cstav.evenmoreinstruments.util.LooperUtil;
@@ -9,13 +10,15 @@ import com.cstav.genshinstrument.util.InstrumentEntityData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
+import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +33,7 @@ public class LooperOverlayInjector {
     private static Button recordBtn;
 
     @SuppressWarnings("resource")
-    public static void onScreenInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
+    public static void afterScreenInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
         if (!(screen instanceof InstrumentScreen instrumentScreen))
             return;
 
@@ -43,7 +46,7 @@ public class LooperOverlayInjector {
             if (!LooperUtil.hasLooperTag(instrumentItem))
                 return;
 
-            ModPacketHandler.sendToServer(new DoesLooperExistPacket(hand));
+            EMIPacketHandler.sendToServer(new DoesLooperExistPacket(hand));
         } else {
             final BlockPos instrumentBlockPos = InstrumentEntityData.getBlockPos(player);
             final BlockEntity instrumentBE = player.level().getBlockEntity(instrumentBlockPos);
@@ -51,14 +54,14 @@ public class LooperOverlayInjector {
             if (!LooperUtil.hasLooperTag(instrumentBE))
                 return;
 
-            ModPacketHandler.sendToServer(new DoesLooperExistPacket());
+            EMIPacketHandler.sendToServer(new DoesLooperExistPacket());
         }
 
         LooperOverlayInjector.screen = instrumentScreen;
 
-        ScreenExtensions.getExtensions(instrumentScreen).fabric_getButtons().add(
+        Screens.getButtons(instrumentScreen).add(
             recordBtn = Button.builder(
-                    Component.translatable("button.evenmoreinstruments.record"),
+                    appendRecordKeyHint(Component.translatable("button.evenmoreinstruments.record")),
                     LooperOverlayInjector::onRecordPress
                 )
                 .width(REC_BTN_WIDTH)
@@ -68,18 +71,39 @@ public class LooperOverlayInjector {
 
         ScreenEvents.remove(instrumentScreen).register(LooperOverlayInjector::onScreenClose);
     }
+    public static void beforeScreenInit(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
+        if (!(screen instanceof InstrumentScreen))
+            return;
+
+        ScreenKeyboardEvents.beforeKeyPress(screen).register(LooperOverlayInjector::onKeyboardPress);
+    }
+
     public static void handleLooperRemoved() {
         removeRecordButton();
         screen = null;
     }
 
-    public static void onScreenClose(final Screen screen) {
+    private static MutableComponent appendRecordKeyHint(final MutableComponent component) {
+        return component
+            .append(" (")
+            .append(KeyMappings.RECORD.getTranslatedKeyMessage())
+            .append(")");
+    }
+
+    private static void onKeyboardPress(Screen screen, int key, int scancode, int modifiers) {
+        if (KeyMappings.RECORD.matches(key, scancode) && (recordBtn != null)) {
+            recordBtn.playDownSound(Minecraft.getInstance().getSoundManager());
+            recordBtn.onPress();
+        }
+    }
+
+    private static void onScreenClose(final Screen screen) {
         if (!isRecording || (LooperOverlayInjector.screen != screen))
             return;
 
         final Player player = Minecraft.getInstance().player;
 
-        ModPacketHandler.sendToServer(
+        EMIPacketHandler.sendToServer(
             new LooperRecordStatePacket(false,
                 InstrumentEntityData.isItem(player)
                     ? InstrumentEntityData.getHand(player)
@@ -100,19 +124,15 @@ public class LooperOverlayInjector {
             InstrumentEntityData.getHand(Minecraft.getInstance().player)
             : null;
 
-        isRecording = isItem
-            ? LooperUtil.isRecording(LooperUtil.looperTag(player.getItemInHand(hand)))
-            : LooperUtil.isRecording(LooperUtil.looperTag(getIBE(player)));
-
 
         if (isRecording) {
             removeRecordButton();
             screen = null;
         } else
-            btn.setMessage(Component.translatable("button.evenmoreinstruments.stop"));
+            btn.setMessage(appendRecordKeyHint(Component.translatable("button.evenmoreinstruments.stop")));
 
         isRecording = !isRecording;
-        ModPacketHandler.sendToServer(new LooperRecordStatePacket(isRecording, hand));
+        EMIPacketHandler.sendToServer(new LooperRecordStatePacket(isRecording, hand));
     }
 
     private static BlockEntity getIBE(final Player player) {
@@ -127,7 +147,7 @@ public class LooperOverlayInjector {
         if (screen == null)
             return;
 
-        ScreenExtensions.getExtensions(screen)
-            .fabric_getButtons().remove(recordBtn);
+        Screens.getButtons(screen).remove(recordBtn);
+        recordBtn = null;
     }
 }
