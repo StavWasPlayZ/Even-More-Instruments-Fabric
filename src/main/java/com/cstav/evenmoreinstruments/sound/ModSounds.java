@@ -1,6 +1,6 @@
 package com.cstav.evenmoreinstruments.sound;
 
-import com.cstav.evenmoreinstruments.Main;
+import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.genshinstrument.sound.NoteSound;
 import com.cstav.genshinstrument.sound.NoteSoundRegistrar;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,12 @@ public class ModSounds {
         TROMBONE = nsr(loc("trombone")).registerGrid(),
         SAXOPHONE = nsr(loc("saxophone")).registerGrid(),
 
-        GUITAR = nsr(loc("guitar")).registerGrid()
+        GUITAR = nsr(loc("guitar")).registerGrid(),
+        SHAMISEN = nsr(loc("shamisen")).stereo().registerGrid(),
+        KOTO = nsr(loc("koto")).registerGrid(),
+
+        PIPA_REGULAR = nsr(loc("pipa_regular")).registerGrid(),
+        PIPA_TERMOLO = nsr(loc("pipa_tremolo")).registerGrid()
     ;
 
 
@@ -49,7 +54,7 @@ public class ModSounds {
 
 
     private static ResourceLocation loc(final String id) {
-        return new ResourceLocation(Main.MODID, id);
+        return new ResourceLocation(EMIMain.MODID, id);
     }
     private static NoteSoundRegistrar nsr(final ResourceLocation location) {
         return new NoteSoundRegistrar(location);

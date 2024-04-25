@@ -10,7 +10,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-
+/**
+ * Syncs the given mod tag on the client to the block position.
+ * Primarily used to update block instruments for looper record states.
+ */
 public class SyncModTagPacket implements IModPacket {
     private final CompoundTag modTag;
     private final BlockPos pos;
@@ -21,8 +24,7 @@ public class SyncModTagPacket implements IModPacket {
     }
 
     public SyncModTagPacket(final FriendlyByteBuf buf) {
-        // Assuming we only send the INITIAL data of a looper,
-        // we don't need to read over 0x20000 or however many zeroes.
+        // We don't need to read over 0x20000 or however many zeroes.
         modTag = buf.readNbt();
         pos = buf.readBlockPos();
     }

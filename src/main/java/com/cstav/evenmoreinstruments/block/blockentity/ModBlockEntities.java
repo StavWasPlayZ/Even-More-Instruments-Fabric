@@ -1,6 +1,6 @@
 package com.cstav.evenmoreinstruments.block.blockentity;
 
-import com.cstav.evenmoreinstruments.Main;
+import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ public class ModBlockEntities {
     );
     
     private static <T extends BlockEntity> BlockEntityType<T> register(final String name, final BlockEntityType<T> bet) {
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, new ResourceLocation(Main.MODID, name), bet);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, new ResourceLocation(EMIMain.MODID, name), bet);
         return bet;
     }
     
