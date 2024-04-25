@@ -282,11 +282,10 @@ public class LooperBlock extends Block implements EntityBlock, IRedstoneWireConn
                 lbe.setTicks(0);
 
                 BlockState newState = pState;
-                // Determine play/cycle behaviour by redstone signal
-                if (pLevel.getBestNeighborSignal(pPos) > REDSTONE_PLAY_SIGNAL_TOGGLE)
-                    newState = lbe.setPlaying(true, newState);
-                else
+                if (pState.getValue(LOOPING))
                     newState = cyclePlaying(lbe, newState);
+                else
+                    newState = lbe.setPlaying(true, newState);
 
                 pLevel.setBlockAndUpdate(pPos, newState.setValue(REDSTONE_TRIGGERED, true));
             }
