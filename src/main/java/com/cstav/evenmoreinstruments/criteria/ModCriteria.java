@@ -5,5 +5,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 public class ModCriteria {
     public static void load() {}
 
-    public static final RecordInjectedTrigger RECORD_INJECTED_TRIGGER = CriteriaTriggers.register(new RecordInjectedTrigger());
+    public static final RecordInjectedTrigger RECORD_INJECTED_TRIGGER = CriteriaTriggers.register(
+        RecordInjectedTrigger.ID, new RecordInjectedTrigger()
+    );
 }
