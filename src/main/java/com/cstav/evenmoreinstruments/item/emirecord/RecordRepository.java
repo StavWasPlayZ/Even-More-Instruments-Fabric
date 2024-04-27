@@ -2,6 +2,7 @@ package com.cstav.evenmoreinstruments.item.emirecord;
 
 import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.server.MCServerInstance;
+import com.google.common.collect.Streams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -27,8 +28,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -50,6 +53,9 @@ public class RecordRepository {
         return RECORDS.containsKey(loc)
             ? Optional.of(RECORDS.get(loc).copy())
             : tryGetRecordFromGen(loc);
+    }
+    public static Set<ResourceLocation> getRecords() {
+        return Collections.unmodifiableSet(RECORDS.keySet());
     }
 
     private static Optional<CompoundTag> tryGetRecordFromGen(final ResourceLocation loc) {
@@ -111,11 +117,18 @@ public class RecordRepository {
 
 
 
-    public static Stream<ResourceLocation> listGenRecords() {
+    public static Stream<ResourceLocation> listRecords(final boolean includeBuiltIn) {
         try {
-            return Files.list(getGenPath())
-                .filter(Files::isDirectory)
-                .flatMap(RecordRepository::listGeneratedInNamespace);
+            return Streams.concat(
+                // Datapacks
+                getRecords().stream()
+                    // Only non-built-ins
+                    .filter((loc) -> !loc.getNamespace().equals(EMIMain.MODID) || includeBuiltIn),
+                // Generated
+                Files.list(getGenPath())
+                    .filter(Files::isDirectory)
+                    .flatMap(RecordRepository::listGeneratedInNamespace)
+            ).distinct();
         } catch (Exception e) {
             return Stream.empty();
         }
