@@ -105,7 +105,7 @@ public class EMIRecordCommand {
             throw new RuntimeException(e);
         }
 
-        stack.getSource().sendSuccess(() -> Component.translatable("commands.evenmoreinstruments.emirecord.success.record_saved"), true);
+        stack.getSource().sendSuccess(Component.translatable("commands.evenmoreinstruments.emirecord.success.record_saved"), true);
         return 1;
     }
 
@@ -129,7 +129,7 @@ public class EMIRecordCommand {
 
         record.get().getOrCreateTag().putString(BurnedRecordItem.BURNED_MEDIA_TAG, recordName.toString());
 
-        stack.getSource().sendSuccess(() -> Component.translatable("commands.evenmoreinstruments.emirecord.success.record_burned"), true);
+        stack.getSource().sendSuccess(Component.translatable("commands.evenmoreinstruments.emirecord.success.record_burned"), true);
         return 1;
     }
 
@@ -145,7 +145,7 @@ public class EMIRecordCommand {
             throw ERROR_RECORD_INVALID.create(name);
         }
 
-        stack.getSource().sendSuccess(() -> Component.translatable("commands.evenmoreinstruments.emirecord.success.record_removed"), true);
+        stack.getSource().sendSuccess(Component.translatable("commands.evenmoreinstruments.emirecord.success.record_removed"), true);
         return 1;
     }
 }
