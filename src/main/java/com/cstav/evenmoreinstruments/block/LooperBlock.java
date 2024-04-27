@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -69,6 +70,24 @@ public class LooperBlock extends Block implements EntityBlock, IRedstoneWireConn
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+    }
+
+
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+        final boolean hasFootage = pLevel
+            .getBlockEntity(pPos, ModBlockEntities.LOOPER)
+            .orElseThrow()
+            .hasFootage();
+
+        if (hasFootage) {
+            pLevel.setBlockAndUpdate(pPos, pState
+                .setValue(RECORD_IN, true)
+                .setValue(PLAYING, true)
+            );
+        }
+
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
 
 
@@ -215,7 +234,7 @@ public class LooperBlock extends Block implements EntityBlock, IRedstoneWireConn
             pPlayer.displayClientMessage(
                 Component.translatable("evenmoreinstruments.record.not_writable").withStyle(ChatFormatting.YELLOW)
                 , true);
-            return InteractionResult.CONSUME;
+            return InteractionResult.FAIL;
         }
 
         return InteractionResult.FAIL;
@@ -282,11 +301,10 @@ public class LooperBlock extends Block implements EntityBlock, IRedstoneWireConn
                 lbe.setTicks(0);
 
                 BlockState newState = pState;
-                // Determine play/cycle behaviour by redstone signal
-                if (pLevel.getBestNeighborSignal(pPos) > REDSTONE_PLAY_SIGNAL_TOGGLE)
-                    newState = lbe.setPlaying(true, newState);
-                else
+                if (pState.getValue(LOOPING))
                     newState = cyclePlaying(lbe, newState);
+                else
+                    newState = lbe.setPlaying(true, newState);
 
                 pLevel.setBlockAndUpdate(pPos, newState.setValue(REDSTONE_TRIGGERED, true));
             }

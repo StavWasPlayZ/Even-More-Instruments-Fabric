@@ -103,6 +103,7 @@ public class ModItems {
 
         LOOPER = registerBlockItem(ModBlocks.LOOPER, EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB),
         LOOPER_ADAPTER = register("looper_adapter", () -> new LooperAdapterItem(new Properties()
+            .stacksTo(1)
             .tab(EMIModCreativeModeTabs.INSTRUMENT_ACCESSORY_TAB)
         )),
 
