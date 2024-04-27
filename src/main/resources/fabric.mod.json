@@ -39,5 +39,7 @@
 		"java": ">=17",
 
 		"fabric-api": "*"
-	}
+	},
+
+	"accessWidener": "evenmoreinstruments.accesswidener"
 }
