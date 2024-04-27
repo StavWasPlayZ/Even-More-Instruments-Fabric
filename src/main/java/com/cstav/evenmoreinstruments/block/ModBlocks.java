@@ -16,16 +16,16 @@ public class ModBlocks {
 
     public static final Block
         KEYBOARD = register("keyboard", new KeyboardBlock(
-            Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
+            Properties.ofFullCopy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
         )),
         KEYBOARD_STAND = register("keyboard_stand", new KeyboardStandBlock(
-            Properties.copy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
+            Properties.ofFullCopy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
         )),
         KOTO = register("koto", new KotoBlock(
             Properties.of().noOcclusion().strength(.3f).sound(SoundType.WOOD)
         )),
 
-        LOOPER = register("looper", new LooperBlock(Properties.copy(Blocks.NOTE_BLOCK)))
+        LOOPER = register("looper", new LooperBlock(Properties.ofFullCopy(Blocks.NOTE_BLOCK)))
     ;
 
 

@@ -129,12 +129,12 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
     // Assuming for single container, slots irrelevant:
 
     @Override
-    public ItemStack getItem(int pSlot) {
-        return recordIn;
+    public ItemStack getTheItem() {
+        return getItem(0);
     }
 
     @Override
-    public void setItem(int pSlot, ItemStack pStack) {
+    public void setTheItem(ItemStack pStack) {
         if (!(pStack.getItem() instanceof EMIRecordItem recordItem))
             return;
 
@@ -154,7 +154,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
     }
 
     @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
+    public ItemStack splitTheItem(int pAmount) {
         if (!isRecordIn() || pAmount <= 0)
             return ItemStack.EMPTY;
 
@@ -179,8 +179,8 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
+    public BlockEntity getContainerBlockEntity() {
+        return this;
     }
 
     @Override

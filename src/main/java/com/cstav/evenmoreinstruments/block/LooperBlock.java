@@ -8,6 +8,7 @@ import com.cstav.evenmoreinstruments.criteria.ModCriteria;
 import com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem;
 import com.cstav.evenmoreinstruments.util.LooperUtil;
 import com.cstav.genshinstrument.item.InstrumentItem;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,9 +22,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,7 +40,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
-public class LooperBlock extends Block implements EntityBlock, IRedstoneWireConnector {
+public class LooperBlock extends BaseEntityBlock implements IRedstoneWireConnector {
+    public static final MapCodec<LooperBlock> CODEC = simpleCodec(LooperBlock::new);
+
     /**
      * Redstone signal above this level will cause the looper to play.
      * Otherwise, will cycle play state.
@@ -50,6 +54,15 @@ public class LooperBlock extends Block implements EntityBlock, IRedstoneWireConn
     public static final BooleanProperty RECORD_IN = BooleanProperty.create("record_in");
     public static final BooleanProperty REDSTONE_TRIGGERED = BooleanProperty.create("redstone_triggered");
     public static final BooleanProperty LOOPING = BooleanProperty.create("looping");
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
 
 
     public LooperBlock(Properties properties) {
@@ -263,15 +276,16 @@ public class LooperBlock extends Block implements EntityBlock, IRedstoneWireConn
 
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
         if (pLevel.isClientSide())
-            return;
+            return pState;
 
         if (!(pLevel.getBlockEntity(pPos) instanceof LooperBlockEntity lbe))
-            return;
+            return pState;
 
         lbe.popRecord();
+        return pState;
     }
 
 
