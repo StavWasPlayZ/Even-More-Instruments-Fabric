@@ -3,7 +3,7 @@ package com.cstav.evenmoreinstruments.item;
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
 import com.cstav.evenmoreinstruments.networking.packet.EMIOpenInstrumentPacket;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer.ByPlayerArgs;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent.InstrumentPlayedEventArgs;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
@@ -19,11 +19,11 @@ class ViolinItem extends AccessoryInstrumentItem {
     }
 
     @Override
-    public int hurtInstrumentBy(final ByPlayerArgs event, final ItemStack accessory) {
+    public int hurtAccessoryBy(final InstrumentPlayedEventArgs<?> args, final ItemStack accessory) {
         // If we did a long press, deal damage by 2.
         final boolean playedLong = Arrays.stream(ModSounds.VIOLIN_FULL_NOTE)
-            .anyMatch((sound) -> sound.equals(event.sound));
+            .anyMatch((sound) -> sound.equals(args.sound()));
 
-        return super.hurtInstrumentBy(event, accessory) * (playedLong ? 2 : 1);
+        return super.hurtAccessoryBy(args, accessory) * (playedLong ? 2 : 1);
     }
 }

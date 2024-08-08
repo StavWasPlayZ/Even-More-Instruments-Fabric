@@ -4,7 +4,7 @@ import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.client.gui.instrument.pipa.PipaScreen;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -33,8 +33,8 @@ public class ShamisenScreen extends GridInstrumentScreen {
         return PipaScreen.INSTRUMENT_ID;
     }
 
-    private static final InstrumentThemeLoader THEME_LOADER = InstrumentThemeLoader.fromOther(
-        PipaScreen.INSTRUMENT_ID,
+    public static final InstrumentThemeLoader THEME_LOADER = InstrumentThemeLoader.fromOther(
+        PipaScreen.THEME_LOADER,
         INSTRUMENT_ID
     );
     @Override

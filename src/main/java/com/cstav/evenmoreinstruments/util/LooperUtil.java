@@ -4,7 +4,7 @@ import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.block.blockentity.LooperBlockEntity;
 import com.cstav.evenmoreinstruments.block.partial.IDoubleBlock;
 import com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer.ByPlayerArgs;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent.InstrumentPlayedEventArgs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -70,30 +70,41 @@ public class LooperUtil {
     }
 
 
-    public static CompoundTag getLooperTagFromEvent(final ByPlayerArgs args) {
-        return (!args.isBlockInstrument())
-            ? looperTag(args.player.getItemInHand(args.hand.get()))
-            : looperTag(args.level.getBlockEntity(args.playPos));
+    public static CompoundTag getLooperTagFromEvent(final InstrumentPlayedEventArgs<?> args) {
+        if (!args.isByPlayer())
+            return new CompoundTag();
+
+        final InstrumentPlayedEventArgs<?>.EntityInfo entityInfo = args.entityInfo().get();
+        final Player player = (Player) entityInfo.entity;
+
+        return (!entityInfo.isBlockInstrument())
+            ? looperTag(player.getItemInHand(entityInfo.hand.get()))
+            : looperTag(args.level().getBlockEntity(args.soundMeta().pos()));
     }
 
     @Nullable
-    public static LooperBlockEntity getFromEvent(final ByPlayerArgs args) {
-        final Level level = args.level;
+    public static LooperBlockEntity getFromEvent(final InstrumentPlayedEventArgs<?> args) {
+        if (!args.isByPlayer())
+            return null;
 
-        if (args.isItemInstrument())
-            return getFromInstrument(level, args.player.getItemInHand(args.hand.get()));
-        else if (args.isBlockInstrument())
-            return getFromInstrument(level, args.level.getBlockEntity(args.playPos));
+        final InstrumentPlayedEventArgs<?>.EntityInfo entityInfo = args.entityInfo().get();
+        final Player player = (Player) entityInfo.entity;
+        final Level level = args.level();
+
+        if (entityInfo.isItemInstrument())
+            return getFromItemInstrument(level, player.getItemInHand(entityInfo.hand.get()));
+        else if (entityInfo.isBlockInstrument())
+            return getFromBlockInstrument(level, level.getBlockEntity(args.soundMeta().pos()));
 
         return null;
     }
 
     @Nullable
-    public static LooperBlockEntity getFromInstrument(final Level level, final ItemStack instrument) {
+    public static LooperBlockEntity getFromItemInstrument(final Level level, final ItemStack instrument) {
         return getFromInstrument(level, LooperUtil.looperTag(instrument), () -> LooperUtil.remLooperTag(instrument));
     }
     @Nullable
-    public static LooperBlockEntity getFromInstrument(final Level level, final BlockEntity instrument) {
+    public static LooperBlockEntity getFromBlockInstrument(final Level level, final BlockEntity instrument) {
         return getFromInstrument(level, LooperUtil.looperTag(instrument), () -> {
             LooperUtil.remLooperTag(instrument);
 
@@ -151,8 +162,8 @@ public class LooperUtil {
 
 
     /**
-     * @param pos The position of the block to check for {@code item}
-     * @return Whether {@code item} is pointing to a looper, and if its position is equal to {@code pos}'s
+     * @param pos The position of the block to check for
+     * @return Whether {@code looperTag} contains any position, and if it's equal to {@code pos}
      */
     public static boolean isSameBlock(final CompoundTag looperTag, final BlockPos pos) {
         try {

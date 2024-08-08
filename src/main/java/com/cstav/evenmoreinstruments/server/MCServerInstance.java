@@ -2,12 +2,17 @@ package com.cstav.evenmoreinstruments.server;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
+import org.jetbrains.annotations.Nullable;
 
+/**
+ * A wrapper class for getting the active
+ * {@link MinecraftServer} instance.
+ */
 public class MCServerInstance {
 
-    private static MinecraftServer instance;
+    private static @Nullable MinecraftServer instance;
 
-    public static void initiate() {
+    public static void attach() {
         ServerLifecycleEvents.SERVER_STARTING.register((server) ->
             instance = server
         );
@@ -16,7 +21,7 @@ public class MCServerInstance {
         );
     }
 
-    public static MinecraftServer get() {
+    public static @Nullable MinecraftServer get() {
         return instance;
     }
 }
