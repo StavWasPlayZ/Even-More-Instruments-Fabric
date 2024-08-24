@@ -11,6 +11,7 @@ import com.cstav.evenmoreinstruments.item.emirecord.RecordRepository;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
 import com.cstav.evenmoreinstruments.server.MCServerInstance;
+import com.cstav.evenmoreinstruments.server.ServerEvents;
 import com.cstav.evenmoreinstruments.server.command.ModCommands;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
@@ -35,6 +36,7 @@ public class EMIMain implements ModInitializer {
     public void onInitialize() {
         MCServerInstance.attach();
         EMIPacketHandler.registerServerPackets();
+        ServerEvents.register();
 
         ModSounds.load();
 
