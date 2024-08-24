@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.Flora
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
+import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -73,6 +74,12 @@ public class NoteBlockInstrumentScreen extends GridInstrumentScreen {
     @Override
     public boolean isSSTI() {
         return true;
+    }
+
+
+    @Override
+    public InstrumentMidiReceiver initMidiReceiver() {
+        return new NoteBlockInstrumentMIDIReceiver(this);
     }
 
 

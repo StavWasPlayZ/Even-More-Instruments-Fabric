@@ -8,9 +8,8 @@ import com.cstav.evenmoreinstruments.item.emirecord.WritableRecordItem;
 import com.cstav.evenmoreinstruments.item.partial.instrument.CreditableBlockInstrumentItem;
 import com.cstav.evenmoreinstruments.item.partial.instrument.CreditableInstrumentItem;
 import com.cstav.evenmoreinstruments.item.partial.instrument.CreditableWindInstrumentItem;
-import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
-import com.cstav.evenmoreinstruments.networking.packet.EMIOpenInstrumentPacket;
 import com.cstav.genshinstrument.GICreativeModeTabs;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -59,14 +58,14 @@ public class ModItems {
         VIOLIN = register("violin", ViolinItem::new, DEFAULT_INSTRUMENTS_TABS, VIOLIN_BOW),
 
         GUITAR = register("guitar", () -> new CreditableInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("guitar"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("guitar")
             ),
             "Philharmonia"
         )),
         PIPA = register("pipa", () -> new CreditableInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("pipa"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("pipa")
             ),
             "DSK Asian DreamZ"
         )),
@@ -78,8 +77,8 @@ public class ModItems {
         ),
         SHAMISEN = register("shamisen",
             () -> new AccessoryInstrumentItem(
-                (player) -> EMIPacketHandler.sendToClient(
-                    new EMIOpenInstrumentPacket("shamisen"), player
+                (player) -> InstrumentPacketUtil.sendOpenPacket(
+                    player, loc("shamisen")
                 ),
                 (InstrumentAccessoryItem) BACHI,
                 "Roland SC-88"
@@ -97,14 +96,14 @@ public class ModItems {
         ),
 
         TROMBONE = register("trombone", () -> new CreditableWindInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("trombone"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("trombone")
             ),
             "Philharmonia"
         )),
         SAXOPHONE = register("saxophone", () -> new CreditableWindInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("saxophone"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("saxophone")
             ),
             "Philharmonia"
         )),
@@ -198,6 +197,11 @@ public class ModItems {
         }
 
         return result;
+    }
+
+
+    private static ResourceLocation loc(final String path) {
+        return new ResourceLocation(EMIMain.MODID, path);
     }
 
 
