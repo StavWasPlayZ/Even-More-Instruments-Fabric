@@ -17,7 +17,7 @@ public class KeyMappings {
     public static final KeyMapping
         INSTRUMENT_TYPE_MODIFIER = KeyBindingHelper.registerKeyBinding(
             new KeyMapping(
-                CATEGORY+".violin_type_modifier",
+                CATEGORY+".instrument_type_modifier",
                 InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_RIGHT_ALT,
                 CATEGORY

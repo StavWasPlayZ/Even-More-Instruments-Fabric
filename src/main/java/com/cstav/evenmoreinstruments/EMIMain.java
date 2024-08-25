@@ -1,6 +1,7 @@
 package com.cstav.evenmoreinstruments;
 
 import com.cstav.evenmoreinstruments.block.ModBlocks;
+import com.cstav.evenmoreinstruments.block.blockentity.LooperNoteListener;
 import com.cstav.evenmoreinstruments.block.blockentity.ModBlockEntities;
 import com.cstav.evenmoreinstruments.criteria.ModCriteria;
 import com.cstav.evenmoreinstruments.gamerule.ModGameRules;
@@ -10,6 +11,7 @@ import com.cstav.evenmoreinstruments.item.emirecord.RecordRepository;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
 import com.cstav.evenmoreinstruments.server.MCServerInstance;
+import com.cstav.evenmoreinstruments.server.ServerEvents;
 import com.cstav.evenmoreinstruments.server.command.ModCommands;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
@@ -32,17 +34,22 @@ public class EMIMain implements ModInitializer {
     
     @Override
     public void onInitialize() {
-        MCServerInstance.initiate();
+        MCServerInstance.attach();
         EMIPacketHandler.registerServerPackets();
+        ServerEvents.register();
 
         ModSounds.load();
 
         ModGameRules.load();
         ModCriteria.load();
 
+
         ModBlocks.load();
         ModBlockEntities.load();
         ModRecipeSerializers.load();
+
+        LooperNoteListener.register();
+
 
         EMIModCreativeModeTabs.load();
         ModItems.load();

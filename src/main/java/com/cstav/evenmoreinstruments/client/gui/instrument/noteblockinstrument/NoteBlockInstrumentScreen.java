@@ -5,8 +5,9 @@ import com.cstav.evenmoreinstruments.item.NoteBlockInstrumentItem;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import com.cstav.genshinstrument.client.gui.screen.instrument.floralzither.FloralZitherScreen;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentThemeLoader;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.GridInstrumentScreen;
-import com.cstav.genshinstrument.client.gui.screen.instrument.partial.notegrid.NoteGridButton;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.grid.GridInstrumentScreen;
+import com.cstav.genshinstrument.client.gui.screen.instrument.partial.note.grid.NoteGridButton;
+import com.cstav.genshinstrument.client.midi.InstrumentMidiReceiver;
 import com.cstav.genshinstrument.sound.NoteSound;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -76,8 +77,14 @@ public class NoteBlockInstrumentScreen extends GridInstrumentScreen {
     }
 
 
-    private static final InstrumentThemeLoader THEME_LOADER = InstrumentThemeLoader.fromOther(
-        FloralZitherScreen.INSTRUMENT_ID,
+    @Override
+    public InstrumentMidiReceiver initMidiReceiver() {
+        return new NoteBlockInstrumentMIDIReceiver(this);
+    }
+
+
+    public static final InstrumentThemeLoader THEME_LOADER = InstrumentThemeLoader.fromOther(
+        FloralZitherScreen.THEME_LOADER,
         new ResourceLocation(EMIMain.MODID, "note_block_instrument")
     );
         
