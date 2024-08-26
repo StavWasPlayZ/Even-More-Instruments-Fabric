@@ -45,7 +45,6 @@ import org.slf4j.Logger;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.cstav.evenmoreinstruments.item.emirecord.BurnedRecordItem.BURNED_MEDIA_TAG;
 import static com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem.*;
@@ -57,18 +56,17 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         RECORD_TAG = "Record",
         RECORDING_TAG = "Recording",
 
-        TICKS_TAG = "Ticks",
-    
-        LOCKED_TAG = "Locked",
-        LOCKED_BY_TAG = "LockedBy"
+        TICKS_TAG = "Ticks"
     ;
 
-    private UUID lockedBy;
+    private boolean locked = false;
+    private Player lockedBy = null;
+
     private ItemStack recordIn = ItemStack.EMPTY;
 
     private CompoundTag channel;
 
-    private final InitiatorID initiatorID;
+    private final InitiatorID looperInitiatorID;
 
     /**
      * A set of cached notes as to use them
@@ -215,7 +213,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
 
     public LooperBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.LOOPER, pPos, pBlockState);
-        this.initiatorID = new InitiatorID("block",
+        this.looperInitiatorID = new InitiatorID("block",
             String.format("x%sy%sz%s", pPos.getX(), pPos.getY(), pPos.getZ())
         );
 
@@ -259,12 +257,12 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         getChannel().putInt(REPEAT_TICK_TAG, tick);
     }
 
-    public void setLockedBy(final UUID player) {
+    public void setLockedBy(final Player player) {
         lockedBy = player;
     }
 
     public void lock() {
-        getPersistentData().putBoolean(LOCKED_TAG, true);
+        locked = true;
         lockedBy = null;
 
         setRepeatTick(getTicks());
@@ -281,8 +279,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
      * This method resets the looper, assuming it is not recording.
      */
     public void reset() {
-        getPersistentData().remove(LOCKED_TAG);
-        getPersistentData().remove(LOCKED_BY_TAG);
+        locked = false;
         lockedBy = null;
 
         notifyHeldNotesPhase(HeldSoundPhase.RELEASE);
@@ -294,20 +291,20 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
     }
 
     public boolean isLocked() {
-        return lockedByAnyone() || getPersistentData().getBoolean(LOCKED_TAG);
+        return lockedByAnyone() || locked;
     }
     public boolean isRecording() {
         return getPersistentData().getBoolean(RECORDING_TAG);
     }
 
-    public boolean isAllowedToRecord(final UUID playerUUID) {
-        return !lockedByAnyone() || isLockedBy(playerUUID);
+    public boolean isAllowedToRecord(final Player player) {
+        return !lockedByAnyone() || isLockedBy(player);
     }
     public boolean lockedByAnyone() {
         return lockedBy != null;
     }
-    public boolean isLockedBy(final UUID playerUUID) {
-        return playerUUID.equals(lockedBy);
+    public boolean isLockedBy(final Player player) {
+        return player.equals(lockedBy);
     }
 
     public int getTicks() {
@@ -352,7 +349,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
                 level,
                 bi.obj1(), bi.obj2(),
                 phase,
-                initiatorID
+                looperInitiatorID
             )
         );
     }
@@ -485,7 +482,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
 
         HeldNoteSoundPacketUtil.sendPlayNotePackets(
             level, sound,
-            meta, phase, initiatorID
+            meta, phase, looperInitiatorID
         );
 
         if (phase == HeldSoundPhase.ATTACK) {
@@ -564,7 +561,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
 
         player.level()
             .getBlockEntity(LooperRecordEntityData.getLooperPos(player), ModBlockEntities.LOOPER)
-            .filter((lbe) -> lbe.lockedBy.equals(player.getUUID()))
+            .filter((lbe) -> lbe.lockedBy.equals(player))
             .ifPresent((lbe) -> {
                 lbe.reset();
                 lbe.getPersistentData().putBoolean(RECORDING_TAG, false);
