@@ -18,7 +18,7 @@ public class EMIPacketHandler {
         S2C_PACKETS = List.of(new Class[] {
             OpenNoteBlockInstrumentPacket.class,
 
-            LooperPlayStatePacket.class, LooperRemovedPacket.class,
+            LooperPlayStatePacket.class, LooperUnplayablePacket.class,
             SyncModTagPacket.class
         }),
         C2S_PACKETS = List.of(new Class[] {

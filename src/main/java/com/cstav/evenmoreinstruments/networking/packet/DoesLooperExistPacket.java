@@ -77,7 +77,7 @@ public class DoesLooperExistPacket implements IModPacket {
         }
 
         if (looperBE == null)
-            EMIPacketHandler.sendToClient(new LooperRemovedPacket(), player);
+            EMIPacketHandler.sendToClient(new LooperUnplayablePacket(), player);
     }
 
 }
