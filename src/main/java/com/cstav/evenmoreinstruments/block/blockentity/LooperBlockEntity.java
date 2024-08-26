@@ -13,7 +13,6 @@ import com.cstav.evenmoreinstruments.networking.packet.LooperPlayStatePacket;
 import com.cstav.evenmoreinstruments.util.CommonUtil;
 import com.cstav.evenmoreinstruments.util.LooperRecordEntityData;
 import com.cstav.evenmoreinstruments.util.LooperUtil;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
 import com.cstav.genshinstrument.networking.packet.instrument.NoteSoundMetadata;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldNoteSoundPacketUtil;
 import com.cstav.genshinstrument.networking.packet.instrument.util.HeldSoundPhase;
@@ -286,6 +285,9 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         getPersistentData().remove(LOCKED_BY_TAG);
         lockedBy = null;
 
+        notifyHeldNotesPhase(HeldSoundPhase.RELEASE);
+        cachedHeldNotes.clear();
+
         setTicks(0);
 
         setChanged();
@@ -338,17 +340,21 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
             );
 
             // Cycle held notes
-            cachedHeldNotes.forEach((bi) ->
-                HeldNoteSoundPacketUtil.sendPlayNotePackets(
-                    level,
-                    bi.obj1(), bi.obj2(),
-                    playing ? HeldSoundPhase.ATTACK : HeldSoundPhase.RELEASE,
-                    initiatorID
-                )
-            );
+            notifyHeldNotesPhase(playing ? HeldSoundPhase.ATTACK : HeldSoundPhase.RELEASE);
         }
 
         return newState;
+    }
+
+    private void notifyHeldNotesPhase(final HeldSoundPhase phase) {
+        cachedHeldNotes.forEach((bi) ->
+            HeldNoteSoundPacketUtil.sendPlayNotePackets(
+                level,
+                bi.obj1(), bi.obj2(),
+                phase,
+                initiatorID
+            )
+        );
     }
 
 
@@ -517,6 +523,12 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
                 recordData.remove(CHANNEL_TAG);
         }
 
+        // Stop all held sounds
+        notifyHeldNotesPhase(HeldSoundPhase.RELEASE);
+        // Then clear em
+        cachedHeldNotes.clear();
+
+        // Finally, pop it
         Vec3 popVec = Vec3.atLowerCornerWithOffset(getBlockPos(), 0.5D, 1.01D, 0.5D)
             .offsetRandom(getLevel().random, 0.7F);
 
