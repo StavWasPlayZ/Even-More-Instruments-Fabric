@@ -7,6 +7,7 @@ import com.cstav.genshinstrument.event.InstrumentPlayedEvent.InstrumentPlayedEve
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -58,6 +59,9 @@ public class AccessoryInstrumentItem extends CreditableInstrumentItem {
     public void onAccessoryUsed(final InstrumentPlayedEventArgs<?> args, final ItemStack accessory) {
         if (!accessory.isDamageableItem())
             return;
+        // Should be given, but better to check than not:
+        if (args.level().isClientSide)
+            return;
 
         //TODO entities in general (fix following)
         if (!args.isByPlayer())
@@ -69,7 +73,7 @@ public class AccessoryInstrumentItem extends CreditableInstrumentItem {
             player,
             (_player) -> {
                 _player.broadcastBreakEvent(_player.getUsedItemHand());
-                InstrumentPacketUtil.setInstrumentClosed(_player);
+                InstrumentPacketUtil.setInstrumentClosed((ServerPlayer) _player);
             }
         );
     }
