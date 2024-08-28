@@ -41,6 +41,6 @@ public class SyncModTagPacket implements IModPacket {
         final BlockEntity be = Minecraft.getInstance().player.level().getBlockEntity(pos);
 
         if (be != null)
-            ((InjectedBlockEntity) be).setModTag(modTag);
+            ((InjectedBlockEntity) be).evenmoreinstruments$setModTag(modTag);
     }
 }
