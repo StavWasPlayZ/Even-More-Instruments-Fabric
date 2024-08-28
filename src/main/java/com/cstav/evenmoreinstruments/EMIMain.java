@@ -29,7 +29,7 @@ public class EMIMain implements ModInitializer {
         return item.getOrCreateTagElement(MODID);
     }
     public static CompoundTag modTag(final BlockEntity be) {
-        return ((InjectedBlockEntity)be).getModTag();
+        return ((InjectedBlockEntity)be).evenmoreinstruments$getModTag();
     }
     
     @Override

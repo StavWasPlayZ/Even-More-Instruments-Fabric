@@ -76,7 +76,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
 
 
     public CompoundTag getPersistentData() {
-        return ((InjectedBlockEntity)this).getModTag();
+        return ((InjectedBlockEntity)this).evenmoreinstruments$getModTag();
     }
 
 
