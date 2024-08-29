@@ -59,7 +59,7 @@ public class AccessoryInstrumentItem extends CreditableInstrumentItem {
     public void onAccessoryUsed(final InstrumentPlayedEventArgs<?> args, final ItemStack accessory) {
         if (!accessory.isDamageableItem())
             return;
-        // Should be given, but better to check than not:
+        // Shouldn't be the case, but always best to check:
         if (args.level().isClientSide)
             return;
 
