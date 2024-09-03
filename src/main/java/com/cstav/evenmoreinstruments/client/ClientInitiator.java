@@ -15,7 +15,7 @@ import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
 import com.cstav.genshinstrument.client.gui.screen.instrument.InstrumentScreenRegistry;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.util.CommonUtil;
-import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
