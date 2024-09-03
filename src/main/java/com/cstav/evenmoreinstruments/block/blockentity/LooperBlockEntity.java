@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ContainerSingleItem;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.HashSet;
@@ -144,8 +145,8 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
     // Assuming for single container, slots irrelevant:
 
     @Override
-    public ItemStack getTheItem() {
-        return getItem(0);
+    public @NotNull ItemStack getTheItem() {
+        return recordIn;
     }
 
     @Override

@@ -3,8 +3,6 @@ package com.cstav.evenmoreinstruments.block;
 import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.block.partial.DoubleInstrumentBlock;
 import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
-import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
-import com.cstav.evenmoreinstruments.networking.packet.EMIOpenInstrumentPacket;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
