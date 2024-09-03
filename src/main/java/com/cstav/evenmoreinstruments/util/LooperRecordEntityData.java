@@ -13,7 +13,7 @@ public class LooperRecordEntityData {
     ;
 
     public static CompoundTag getModTag(final Entity entity) {
-        return ((IEntityModData)entity).getPersistentData();
+        return ((IEntityModData)entity).evenmoreinstruments$getPersistentData();
     }
 
     public static void setRecording(final Entity entity, final BlockPos looperPos) {

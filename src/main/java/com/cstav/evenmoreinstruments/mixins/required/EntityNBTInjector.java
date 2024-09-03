@@ -17,8 +17,9 @@ public abstract class EntityNBTInjector implements IEntityModData {
     @Unique
     private CompoundTag persistentData;
 
+    @Unique
     @Override
-    public CompoundTag getPersistentData() {
+    public CompoundTag evenmoreinstruments$getPersistentData() {
         if (persistentData == null)
             persistentData = new CompoundTag();
         

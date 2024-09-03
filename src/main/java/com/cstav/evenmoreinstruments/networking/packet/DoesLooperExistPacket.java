@@ -53,7 +53,7 @@ public class DoesLooperExistPacket implements IModPacket {
 
         if (hand.isPresent()) {
             final ItemStack instrumentItem = player.getItemInHand(hand.get());
-            looperBE = LooperUtil.getFromInstrument(level, instrumentItem);
+            looperBE = LooperUtil.getFromItemInstrument(level, instrumentItem);
 
             if (looperBE != null)
                 // For items, also check if we are too far away
@@ -65,7 +65,7 @@ public class DoesLooperExistPacket implements IModPacket {
             final BlockPos instrumentBlockPos = InstrumentEntityData.getBlockPos(player);
             final BlockEntity instrumentBlockEntity = level.getBlockEntity(instrumentBlockPos);
 
-            looperBE = LooperUtil.getFromInstrument(level, instrumentBlockEntity);
+            looperBE = LooperUtil.getFromBlockInstrument(level, instrumentBlockEntity);
 
             // Manually update the tag removal for the client
             if (looperBE == null) {
@@ -77,7 +77,7 @@ public class DoesLooperExistPacket implements IModPacket {
         }
 
         if (looperBE == null)
-            EMIPacketHandler.sendToClient(new LooperRemovedPacket(), player);
+            EMIPacketHandler.sendToClient(new LooperUnplayablePacket(), player);
     }
 
 }

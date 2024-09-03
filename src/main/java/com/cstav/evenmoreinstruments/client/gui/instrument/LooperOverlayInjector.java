@@ -91,25 +91,19 @@ public class LooperOverlayInjector {
     }
 
     private static void onKeyboardPress(Screen screen, int key, int scancode, int modifiers) {
-        if (KeyMappings.RECORD.matches(key, scancode) && (recordBtn != null)) {
-            recordBtn.playDownSound(Minecraft.getInstance().getSoundManager());
-            recordBtn.onPress();
+        if (KeyMappings.RECORD.matches(key, scancode)) {
+
+            if (recordBtn != null) {
+                recordBtn.playDownSound(Minecraft.getInstance().getSoundManager());
+                recordBtn.onPress();
+            }
+
         }
     }
 
     private static void onScreenClose(final Screen screen) {
-        if (!isRecording || (LooperOverlayInjector.screen != screen))
+        if (LooperOverlayInjector.screen != screen)
             return;
-
-        final Player player = Minecraft.getInstance().player;
-
-        EMIPacketHandler.sendToServer(
-            new LooperRecordStatePacket(false,
-                InstrumentEntityData.isItem(player)
-                    ? InstrumentEntityData.getHand(player)
-                    : null
-            )
-        );
 
         isRecording = false;
         LooperOverlayInjector.screen = null;

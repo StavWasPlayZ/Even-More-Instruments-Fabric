@@ -8,46 +8,42 @@ import com.cstav.evenmoreinstruments.item.emirecord.WritableRecordItem;
 import com.cstav.evenmoreinstruments.item.partial.instrument.CreditableBlockInstrumentItem;
 import com.cstav.evenmoreinstruments.item.partial.instrument.CreditableInstrumentItem;
 import com.cstav.evenmoreinstruments.item.partial.instrument.CreditableWindInstrumentItem;
-import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
-import com.cstav.evenmoreinstruments.networking.packet.EMIOpenInstrumentPacket;
 import com.cstav.genshinstrument.GICreativeModeTabs;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import static com.cstav.genshinstrument.GICreativeModeTabs.addToTab;
+
 public class ModItems {
-    public static void load() {
-        subscribeCreativeTabHandlers();
-    }
+    public static void load() {}
 
-    private static final LinkedHashMap<ResourceKey<CreativeModeTab>, ArrayList<Item>> CREATIVE_TABS_MAP = new LinkedHashMap<>();
-    private static ArrayList<Item> getCreativeItems(final ResourceKey<CreativeModeTab> tabKey) {
-        if (!CREATIVE_TABS_MAP.containsKey(tabKey))
-            CREATIVE_TABS_MAP.put(tabKey, new ArrayList<>());
-        return CREATIVE_TABS_MAP.get(tabKey);
+    private static void toDefaultInstrumentTabs(Item item, Item appearsBefore) {
+        GICreativeModeTabs.addToInstrumentsTab(1, item, appearsBefore);
+        addToTab(1, CreativeModeTabs.TOOLS_AND_UTILITIES, item, appearsBefore);
     }
-
-    @SuppressWarnings("unchecked")
-    private static final ResourceKey<CreativeModeTab>[] DEFAULT_INSTRUMENTS_TABS = new ResourceKey[] {
-        GICreativeModeTabs.INSTRUMENTS_TAB, CreativeModeTabs.TOOLS_AND_UTILITIES
-    };
-    @SuppressWarnings("unchecked")
-    private static final ResourceKey<CreativeModeTab>[] DEFAULT_INSTRUMENT_BLOCK_TABS = new ResourceKey[] {
-        GICreativeModeTabs.INSTRUMENTS_TAB, CreativeModeTabs.TOOLS_AND_UTILITIES, CreativeModeTabs.FUNCTIONAL_BLOCKS
-    };
+    private static void toDefaultBlockInstrumentTabs(Item item, Item appearsBefore) {
+        toDefaultInstrumentTabs(item, appearsBefore);
+        addToTab(1, CreativeModeTabs.FUNCTIONAL_BLOCKS, item, appearsBefore);
+    }
+    private static void toRecordTabs(Item item, Item appearsBefore) {
+        addToTab(1, CreativeModeTabs.TOOLS_AND_UTILITIES, item, appearsBefore);
+        addToTab(1, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB, item, appearsBefore);
+    }
 
 
     public static final Item
@@ -56,17 +52,17 @@ public class ModItems {
                 new Properties().stacksTo(1).durability(InstrumentAccessoryItem.MAX_DURABILITY)
             )
         ),
-        VIOLIN = register("violin", ViolinItem::new, DEFAULT_INSTRUMENTS_TABS, VIOLIN_BOW),
+        VIOLIN = register("violin", ViolinItem::new, ModItems::toDefaultInstrumentTabs, VIOLIN_BOW),
 
         GUITAR = register("guitar", () -> new CreditableInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("guitar"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("guitar")
             ),
             "Philharmonia"
         )),
         PIPA = register("pipa", () -> new CreditableInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("pipa"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("pipa")
             ),
             "DSK Asian DreamZ"
         )),
@@ -78,13 +74,13 @@ public class ModItems {
         ),
         SHAMISEN = register("shamisen",
             () -> new AccessoryInstrumentItem(
-                (player) -> EMIPacketHandler.sendToClient(
-                    new EMIOpenInstrumentPacket("shamisen"), player
+                (player) -> InstrumentPacketUtil.sendOpenPacket(
+                    player, loc("shamisen")
                 ),
                 (InstrumentAccessoryItem) BACHI,
                 "Roland SC-88"
             ),
-            DEFAULT_INSTRUMENTS_TABS,
+            ModItems::toDefaultInstrumentTabs,
             BACHI
         ),
 
@@ -93,18 +89,18 @@ public class ModItems {
                     ModBlocks.KOTO, new Properties().stacksTo(1),
                     "DSK Asian DreamZ"
                 ),
-            DEFAULT_INSTRUMENT_BLOCK_TABS
+            ModItems::toDefaultBlockInstrumentTabs
         ),
 
         TROMBONE = register("trombone", () -> new CreditableWindInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("trombone"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("trombone")
             ),
             "Philharmonia"
         )),
         SAXOPHONE = register("saxophone", () -> new CreditableWindInstrumentItem(
-            (player) -> EMIPacketHandler.sendToClient(
-                new EMIOpenInstrumentPacket("saxophone"), player
+            (player) -> InstrumentPacketUtil.sendOpenPacket(
+                player, loc("saxophone")
             ),
             "Philharmonia"
         )),
@@ -113,24 +109,30 @@ public class ModItems {
                     ModBlocks.KEYBOARD, new Properties().stacksTo(1),
                     null
                 ),
-            DEFAULT_INSTRUMENT_BLOCK_TABS
+            ModItems::toDefaultBlockInstrumentTabs
         ),
 
         KEYBOARD_STAND = registerBlockItem(ModBlocks.KEYBOARD_STAND,
-            GICreativeModeTabs.INSTRUMENTS_TAB
+            ModItems::toDefaultInstrumentTabs
         ),
 
-        LOOPER = registerBlockItem(ModBlocks.LOOPER,
-            EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB, CreativeModeTabs.FUNCTIONAL_BLOCKS,
-            CreativeModeTabs.REDSTONE_BLOCKS
-        ),
+        LOOPER = registerBlockItem(ModBlocks.LOOPER, (item, appearsBefore) -> {
+            addToTab(1, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB, item, appearsBefore);
+            addToTab(1, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB, item, appearsBefore);
+            addToTab(1, CreativeModeTabs.FUNCTIONAL_BLOCKS, item, appearsBefore);
+            addToTab(1, CreativeModeTabs.REDSTONE_BLOCKS, item, appearsBefore);
+        }),
         LOOPER_ADAPTER = register("looper_adapter",
             () -> new LooperAdapterItem(new Properties().stacksTo(1)),
-            CreativeModeTabs.REDSTONE_BLOCKS, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB
+            (item, appearsBefore) -> {
+                 addToTab(1, CreativeModeTabs.REDSTONE_BLOCKS, item, appearsBefore);
+                 addToTab(1, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB, item, appearsBefore);
+            }
         ),
 
-        RECORD_WRITABLE = register("record_writable", () -> new WritableRecordItem(new Properties()),
-            CreativeModeTabs.TOOLS_AND_UTILITIES, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB
+        RECORD_WRITABLE = register("record_writable", () ->
+                new WritableRecordItem(new Properties()),
+            ModItems::toRecordTabs
         ),
         RECORD_JOHNNY = register("record_johnny", () ->
                 new BurnedRecordItem(
@@ -139,7 +141,7 @@ public class ModItems {
                     "Hänschen klein - Franz Wiedemann",
                     null
                 ),
-            CreativeModeTabs.TOOLS_AND_UTILITIES, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB
+            ModItems::toRecordTabs
         ),
         RECORD_SUPER_IDOL = register("record_super_idol", () ->
                 new BurnedRecordItem(
@@ -148,7 +150,7 @@ public class ModItems {
                     "Super Idol - De Xian Rong",
                     "Saxophy"
                 ),
-            CreativeModeTabs.TOOLS_AND_UTILITIES, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB
+            ModItems::toRecordTabs
         ),
         RECORD_OVEN_KID = register("record_oven_kid", () ->
                 new BurnedRecordItem(
@@ -157,7 +159,7 @@ public class ModItems {
                     "Timmy Trumpet & Savage - Freaks",
                     "StavWasPlayZ"
                 ),
-            CreativeModeTabs.TOOLS_AND_UTILITIES, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB
+            ModItems::toRecordTabs
         ),
         RECORD_SAD_VIOLIN = register("record_sad_violin", () ->
                 new BurnedRecordItem(
@@ -166,7 +168,7 @@ public class ModItems {
                     "Sad Romance - Ji Pyeongkeyon",
                     "StavWasPlayZ"
                 ),
-            CreativeModeTabs.TOOLS_AND_UTILITIES, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB
+            ModItems::toRecordTabs
         ),
         RECORD_RICKROLL = register("record_rickroll", () ->
                 new BurnedRecordItem(
@@ -176,7 +178,7 @@ public class ModItems {
                     "StavWasPlayZ",
                     Component.translatable("item.evenmoreinstruments.interesting_record")
                 ),
-            CreativeModeTabs.TOOLS_AND_UTILITIES, EMIModCreativeModeTabs.MUSIC_PRODUCTION_TAB
+            ModItems::toRecordTabs
         )
     ;
 
@@ -201,61 +203,39 @@ public class ModItems {
     }
 
 
+    private static ResourceLocation loc(final String path) {
+        return new ResourceLocation(EMIMain.MODID, path);
+    }
+
+
     // private static Item registerBlockItem(final Block block) {
     //     return registerBlockItem(block, DEFAULT_INSTRUMENT_BLOCK_TABS);
     // }
-    @SafeVarargs
-    private static Item registerBlockItem(Block block, ResourceKey<CreativeModeTab>... tabs) {
+    private static Item registerBlockItem(Block block, BiConsumer<Item, Item> tabConsumer,
+                                          Item appearsBefore) {
         return register(
             BuiltInRegistries.BLOCK.getKey(block).getPath(),
             () -> new BlockItem(block, new Properties()),
-            tabs
+            tabConsumer, appearsBefore
         );
+    }
+    private static Item registerBlockItem(Block block, BiConsumer<Item, Item> tabConsumer) {
+        return registerBlockItem(block, tabConsumer, null);
     }
 
     // Suppliers will stay for compatibility reasons
-    private static Item register(String name, Supplier<Item> supplier, ResourceKey<CreativeModeTab>[] tabs,
+    private static Item register(String name, Supplier<Item> supplier, BiConsumer<Item, Item> tabConsumer,
                                                  Item appearsBefore) {
         final Item item = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(EMIMain.MODID, name), supplier.get());
-
-        for (final ResourceKey<CreativeModeTab> tabKey : tabs) {
-            final ArrayList<Item> items = getCreativeItems(tabKey);
-            if (items.contains(appearsBefore)) {
-                items.add(items.indexOf(appearsBefore), item);
-            } else {
-                items.add(item);
-            }
-        }
+        tabConsumer.accept(item, appearsBefore);
 
         return item;
     }
-    @SafeVarargs
-    private static Item register(String name, Supplier<Item> supplier, ResourceKey<CreativeModeTab>... tabs) {
-        final Item item = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(EMIMain.MODID, name), supplier.get());
-
-        for (final ResourceKey<CreativeModeTab> tabKey: tabs) {
-            getCreativeItems(tabKey).add(item);
-        }
-
-        return item;
+    private static Item register(String name, Supplier<Item> supplier, BiConsumer<Item, Item> tabConsumer) {
+        return register(name, supplier, tabConsumer, null);
     }
     private static Item register(String name, Supplier<Item> supplier) {
-        return register(name, supplier, DEFAULT_INSTRUMENTS_TABS);
-    }
-
-
-    public static void subscribeCreativeTabHandlers() {
-        CREATIVE_TABS_MAP.keySet().forEach((tabKey) -> {
-
-            ItemGroupEvents.modifyEntriesEvent(tabKey).register((entries) ->
-                entries.acceptAll(
-                    getCreativeItems(tabKey).stream()
-                        .map(ItemStack::new)
-                        .toList()
-                )
-            );
-
-        });
+        return register(name, supplier, ModItems::toDefaultInstrumentTabs);
     }
 
 }

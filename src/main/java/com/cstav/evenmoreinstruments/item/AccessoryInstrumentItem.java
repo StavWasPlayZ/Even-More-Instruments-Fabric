@@ -3,10 +3,11 @@ package com.cstav.evenmoreinstruments.item;
 import com.cstav.evenmoreinstruments.item.partial.instrument.CreditableInstrumentItem;
 import com.cstav.evenmoreinstruments.util.CommonUtil;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent;
-import com.cstav.genshinstrument.event.InstrumentPlayedEvent.ByPlayer.ByPlayerArgs;
+import com.cstav.genshinstrument.event.InstrumentPlayedEvent.InstrumentPlayedEventArgs;
 import com.cstav.genshinstrument.networking.OpenInstrumentPacketSender;
-import com.cstav.genshinstrument.util.ServerUtil;
+import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPacketUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -55,42 +56,58 @@ public class AccessoryInstrumentItem extends CreditableInstrumentItem {
         return super.use(pLevel, pPlayer, pUsedHand);
     }
 
-    public void onAccessoryUsed(final ByPlayerArgs args, final ItemStack accessory) {
+    public void onAccessoryUsed(final InstrumentPlayedEventArgs<?> args, final ItemStack accessory) {
         if (!accessory.isDamageableItem())
             return;
+        // Shouldn't be the case, but always best to check:
+        if (args.level().isClientSide)
+            return;
+
+        //TODO entities in general (fix following)
+        if (!args.isByPlayer())
+            return;
+        final Player player = (Player) args.entityInfo().get().entity;
 
         accessory.hurtAndBreak(
-            hurtInstrumentBy(args, accessory),
-            args.player,
-            (player) -> {
-                player.broadcastBreakEvent(player.getUsedItemHand());
-                ServerUtil.setInstrumentClosed(player);
+            hurtAccessoryBy(args, accessory),
+            player,
+            (_player) -> {
+                _player.broadcastBreakEvent(_player.getUsedItemHand());
+                InstrumentPacketUtil.setInstrumentClosed((ServerPlayer) _player);
             }
         );
     }
 
-    public int hurtInstrumentBy(final ByPlayerArgs args, final ItemStack accessory) {
+    public int hurtAccessoryBy(final InstrumentPlayedEventArgs<?> args, final ItemStack accessory) {
         return 1;
     }
 
 
     // Call AccessoryInstrumentItem#onAccessoryUsed
     static {
-        InstrumentPlayedEvent.ByPlayer.EVENT.register(AccessoryInstrumentItem::onInstrumentPlayedEvent);
+        InstrumentPlayedEvent.EVENT.register(AccessoryInstrumentItem::onInstrumentPlayedEvent);
     }
 
-    public static void onInstrumentPlayedEvent(final ByPlayerArgs args) {
-        if (args.level.isClientSide)
+    public static void onInstrumentPlayedEvent(final InstrumentPlayedEventArgs<?> args) {
+        if (args.level().isClientSide)
             return;
 
-        if (!args.isItemInstrument())
+        //TODO make for entities in general.
+        // Use getSlot.
+        if (!args.isByPlayer())
             return;
 
-        final Item instruemntItem = args.player.getItemInHand(args.hand.get()).getItem();
+        final InstrumentPlayedEventArgs<?>.EntityInfo entityInfo = args.entityInfo().get();
+        final Player player = (Player) entityInfo.entity;
+
+        if (!entityInfo.isItemInstrument())
+            return;
+
+        final Item instruemntItem = player.getItemInHand(entityInfo.hand.get()).getItem();
         if (!(instruemntItem instanceof AccessoryInstrumentItem aiItem))
             return;
 
-        final ItemStack offhandStack = args.player.getItemInHand(CommonUtil.getOffhand(args.hand.get()));
+        final ItemStack offhandStack = player.getItemInHand(CommonUtil.getOffhand(entityInfo.hand.get()));
         if (!(offhandStack.getItem() instanceof InstrumentAccessoryItem))
             return;
 
