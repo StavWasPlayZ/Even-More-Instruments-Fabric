@@ -72,7 +72,7 @@ dependencies {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/evenmoreinstruments.accesswidener")
+	//accessWidenerPath = file("src/main/resources/evenmoreinstruments.accesswidener")
 }
 
 processResources {
