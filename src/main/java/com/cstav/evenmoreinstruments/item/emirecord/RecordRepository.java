@@ -163,8 +163,8 @@ public class RecordRepository {
      * Queries the {@code generated} level directory
      */
     private static Path getGenPath(final boolean failIfNone) throws IOException {
-        final Path path = MCServerInstance.get().storageSource
-            .getLevelPath(LevelResource.GENERATED_DIR)
+        final Path path = MCServerInstance.get()
+            .getWorldPath(LevelResource.GENERATED_DIR)
             .normalize();
 
         if (!Files.isDirectory(path)) {
