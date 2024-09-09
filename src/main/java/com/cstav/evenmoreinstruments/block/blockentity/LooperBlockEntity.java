@@ -5,6 +5,7 @@ import com.cstav.evenmoreinstruments.block.ModBlocks;
 import com.cstav.evenmoreinstruments.block.util.WritableNoteType;
 import com.cstav.evenmoreinstruments.gamerule.ModGameRules;
 import com.cstav.evenmoreinstruments.item.ModItems;
+import com.cstav.evenmoreinstruments.item.component.ModDataComponents;
 import com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem;
 import com.cstav.evenmoreinstruments.item.emirecord.RecordRepository;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
@@ -26,6 +27,7 @@ import com.cstav.genshinstrument.util.BiValue;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -47,7 +49,6 @@ import org.slf4j.Logger;
 import java.util.HashSet;
 import java.util.Optional;
 
-import static com.cstav.evenmoreinstruments.item.emirecord.BurnedRecordItem.BURNED_MEDIA_TAG;
 import static com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem.*;
 
 public class LooperBlockEntity extends BlockEntity implements ContainerSingleItem {
@@ -100,21 +101,22 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
      * Retrieves the channel (footage) information from the inserted record
      */
     private void updateChannel() {
-        final CompoundTag recordData = recordIn.getOrCreateTag();
-
-        if (recordData.contains(CHANNEL_TAG, Tag.TAG_COMPOUND)) {
-            channel = recordData.getCompound(CHANNEL_TAG);
+        if (recordIn.has(ModDataComponents.CHANNNEL)) {
+            setChannel(recordIn.get(ModDataComponents.CHANNNEL).getUnsafe());
         }
-        else if (recordData.contains(BURNED_MEDIA_TAG, Tag.TAG_STRING)) {
+        else if (recordIn.has(ModDataComponents.BURNED_MEDIA)) {
             setChannel(RecordRepository.getRecord(getBurnedMediaLoc()).orElse(null));
+        }
+        else {
+            setChannel(new CompoundTag());
         }
     }
     protected ResourceLocation getBurnedMediaLoc() {
-        return new ResourceLocation(recordIn.getTag().getString(BURNED_MEDIA_TAG));
+        return recordIn.get(ModDataComponents.BURNED_MEDIA);
     }
 
     private void updateRecordNBT() {
-        getPersistentData().put(RECORD_TAG, recordIn.save(new CompoundTag()));
+        getPersistentData().put(RECORD_TAG, recordIn.save(level.registryAccess()));
     }
 
     public boolean hasFootage() {
@@ -124,7 +126,7 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
     }
 
     public boolean isWritable() {
-        return (getChannel() != null) && getChannel().getBoolean(WRITABLE_TAG);
+        return getChannel().getBoolean(WRITABLE_TAG);
     }
     public void setWritable(final boolean writable) {
         getChannel().putBoolean(WRITABLE_TAG, writable);
@@ -134,13 +136,14 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         return !recordIn.isEmpty();
     }
     protected CompoundTag getRecordData() {
-        return recordIn.getOrCreateTag();
+        return channel;
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        recordIn = ItemStack.of(getPersistentData().getCompound(RECORD_TAG));
+    protected void loadAdditional(CompoundTag pTag, Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
+
+        recordIn = ItemStack.parseOptional(pRegistries, getPersistentData().getCompound(RECORD_TAG));
         updateChannel();
     }
 
@@ -198,9 +201,8 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         return 1;
     }
 
-    @Override
-    public BlockEntity getContainerBlockEntity() {
-        return this;
+    public boolean stillValid(Player pPlayer) {
+        return !(isLocked() && isLockedBy(pPlayer));
     }
 
     @Override
@@ -252,7 +254,9 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         else
             ticks++;
 
-        setTicks(ticks);
+        setTicks(ticks);    /**
+         * Used for stopping the Looper's recording
+         */
         return ticks;
     }
 
@@ -527,15 +531,13 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
 
 
     public void popRecord() {
-        final CompoundTag recordData = getRecordData();
-
         if (recordIn.is(ModItems.RECORD_WRITABLE)) {
             // Record ejected while player writing to the record; remove notes
             if (isWritable())
-                recordData.remove(NOTES_TAG);
+                getRecordData().remove(NOTES_TAG);
             // Empty record; empty data.
             if (!hasFootage())
-                recordData.remove(CHANNEL_TAG);
+                recordIn.remove(ModDataComponents.CHANNNEL);
         }
 
         stopAndClearHeldSounds();

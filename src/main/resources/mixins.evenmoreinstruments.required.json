@@ -6,7 +6,6 @@
         "BlockEntityNBTInjector",
         "EntityNBTInjector",
         "GameRuleIntegerInvoker",
-        "ItemInjector",
         "RedstoneWireConnectorInjector"
     ],
     "minVersion": "0.8",

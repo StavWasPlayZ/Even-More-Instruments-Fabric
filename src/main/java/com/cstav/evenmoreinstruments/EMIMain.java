@@ -6,6 +6,7 @@ import com.cstav.evenmoreinstruments.block.blockentity.ModBlockEntities;
 import com.cstav.evenmoreinstruments.criteria.ModCriteria;
 import com.cstav.evenmoreinstruments.gamerule.ModGameRules;
 import com.cstav.evenmoreinstruments.item.ModItems;
+import com.cstav.evenmoreinstruments.item.component.ModDataComponents;
 import com.cstav.evenmoreinstruments.item.crafting.ModRecipeSerializers;
 import com.cstav.evenmoreinstruments.item.emirecord.RecordRepository;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
@@ -16,7 +17,6 @@ import com.cstav.evenmoreinstruments.server.command.ModCommands;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,9 @@ public class EMIMain implements ModInitializer {
     public static final String MODID = "evenmoreinstruments";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
-    public static CompoundTag modTag(final ItemStack item) {
-        return item.getOrCreateTagElement(MODID);
-    }
+//    public static CompoundTag modTag(final ItemStack item) {
+//        return item.getOrCreateTagElement(MODID);
+//    }
     public static CompoundTag modTag(final BlockEntity be) {
         return ((InjectedBlockEntity)be).evenmoreinstruments$getModTag();
     }
@@ -51,6 +51,7 @@ public class EMIMain implements ModInitializer {
         LooperNoteListener.register();
 
 
+        ModDataComponents.load();
         EMIModCreativeModeTabs.load();
         ModItems.load();
         RecordRepository.load();

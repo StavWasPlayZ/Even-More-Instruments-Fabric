@@ -2,6 +2,7 @@ package com.cstav.evenmoreinstruments.mixins.required;
 
 import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,11 +30,12 @@ public class BlockEntityNBTInjector implements InjectedBlockEntity {
 
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
-    protected void saveAdditionalInjector(CompoundTag tag, CallbackInfo ci) {
-        tag.put(EMIMain.MODID, evenmoreinstruments$getModTag());
+    protected void saveAdditionalInjector(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
+        if (!persistentData.isEmpty())
+            tag.put(EMIMain.MODID, persistentData);
     }
-    @Inject(method = "load", at = @At("TAIL"))
-    protected void loadInjector(CompoundTag tag, CallbackInfo ci) {
+    @Inject(method = "loadAdditional", at = @At("TAIL"))
+    protected void loadInjector(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
         persistentData = tag.getCompound(EMIMain.MODID);
     }
 

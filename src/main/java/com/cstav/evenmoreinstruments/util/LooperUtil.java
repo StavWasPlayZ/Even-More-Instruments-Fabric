@@ -3,6 +3,7 @@ package com.cstav.evenmoreinstruments.util;
 import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.block.blockentity.LooperBlockEntity;
 import com.cstav.evenmoreinstruments.block.partial.IDoubleBlock;
+import com.cstav.evenmoreinstruments.item.component.ModDataComponents;
 import com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem;
 import com.cstav.genshinstrument.event.InstrumentPlayedEvent.InstrumentPlayedEventArgs;
 import net.minecraft.ChatFormatting;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +31,7 @@ public class LooperUtil {
 
     // Handle instrument's looper tag
     public static boolean hasLooperTag(final ItemStack instrument) {
-        return hasLooperTag(EMIMain.modTag(instrument));
+        return instrument.has(ModDataComponents.LOOPER_TAG);
     }
     public static boolean hasLooperTag(final BlockEntity instrument) {
         return hasLooperTag(EMIMain.modTag(instrument));
@@ -39,14 +41,14 @@ public class LooperUtil {
     }
 
     public static void remLooperTag(final ItemStack instrument) {
-        EMIMain.modTag(instrument).remove(LOOPER_TAG);
+        instrument.remove(ModDataComponents.LOOPER_TAG);
     }
     public static void remLooperTag(final BlockEntity instrument) {
         EMIMain.modTag(instrument).remove(LOOPER_TAG);
     }
 
     public static void createLooperTag(final ItemStack instrument, final BlockPos looperPos) {
-        EMIMain.modTag(instrument).put(LOOPER_TAG, new CompoundTag());
+        instrument.set(ModDataComponents.LOOPER_TAG, CustomData.of(new CompoundTag()));
         constructLooperTag(looperTag(instrument), looperPos);
     }
     public static void createLooperTag(final BlockEntity instrument, final BlockPos looperPos) {
@@ -58,7 +60,9 @@ public class LooperUtil {
     }
 
     public static CompoundTag looperTag(final ItemStack instrument) {
-        return looperTag(EMIMain.modTag(instrument));
+        return instrument.has(ModDataComponents.LOOPER_TAG)
+            ? instrument.get(ModDataComponents.LOOPER_TAG).getUnsafe()
+            : new CompoundTag();
     }
     public static CompoundTag looperTag(final BlockEntity instrument) {
         return looperTag(EMIMain.modTag(instrument));
@@ -66,7 +70,7 @@ public class LooperUtil {
     public static CompoundTag looperTag(final CompoundTag parentTag) {
         return parentTag.contains(LOOPER_TAG, CompoundTag.TAG_COMPOUND)
             ? parentTag.getCompound(LOOPER_TAG)
-            : CommonUtil.TAG_EMPTY;
+            : new CompoundTag();
     }
 
 
@@ -175,8 +179,7 @@ public class LooperUtil {
 
     @Nullable
     public static BlockPos getLooperPos(final CompoundTag looperTag) {
-        final CompoundTag looperPosTag = looperTag.getCompound(POS_TAG);
-        return (looperPosTag == null) ? null : NbtUtils.readBlockPos(looperPosTag);
+        return NbtUtils.readBlockPos(looperTag, POS_TAG).orElse(null);
     }
 
     public static void setRecording(final Player player, final BlockPos looperPos) {

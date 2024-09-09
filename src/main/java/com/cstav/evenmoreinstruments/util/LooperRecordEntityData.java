@@ -29,7 +29,6 @@ public class LooperRecordEntityData {
         return getModTag(entity).getBoolean(RECORDING_TAG);
     }
     public static BlockPos getLooperPos(final Entity entity) {
-        final CompoundTag posTag = getModTag(entity).getCompound(REC_POS_TAG);
-        return posTag.isEmpty() ? null : NbtUtils.readBlockPos(posTag);
+        return NbtUtils.readBlockPos(getModTag(entity), REC_POS_TAG).orElse(null);
     }
 }
