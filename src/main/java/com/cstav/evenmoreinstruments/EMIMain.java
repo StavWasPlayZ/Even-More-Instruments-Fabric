@@ -34,8 +34,10 @@ public class EMIMain implements ModInitializer {
     
     @Override
     public void onInitialize() {
-        MCServerInstance.attach();
+        EMIPacketHandler.registerCodecs();
         EMIPacketHandler.registerServerPackets();
+
+        MCServerInstance.attach();
         ServerEvents.register();
 
         ModSounds.load();

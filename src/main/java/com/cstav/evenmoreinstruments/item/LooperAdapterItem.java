@@ -6,7 +6,7 @@ import com.cstav.evenmoreinstruments.block.blockentity.LooperBlockEntity;
 import com.cstav.evenmoreinstruments.block.partial.IDoubleBlock;
 import com.cstav.evenmoreinstruments.item.component.ModDataComponents;
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
-import com.cstav.evenmoreinstruments.networking.packet.SyncModTagPacket;
+import com.cstav.evenmoreinstruments.networking.packet.s2c.SyncModTagPacket;
 import com.cstav.evenmoreinstruments.util.LooperUtil;
 import com.cstav.genshinstrument.block.partial.AbstractInstrumentBlock;
 import com.cstav.genshinstrument.block.partial.InstrumentBlockEntity;

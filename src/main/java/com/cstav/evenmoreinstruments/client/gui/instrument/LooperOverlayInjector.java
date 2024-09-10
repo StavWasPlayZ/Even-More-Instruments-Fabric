@@ -2,8 +2,8 @@ package com.cstav.evenmoreinstruments.client.gui.instrument;
 
 import com.cstav.evenmoreinstruments.client.KeyMappings;
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
-import com.cstav.evenmoreinstruments.networking.packet.DoesLooperExistPacket;
-import com.cstav.evenmoreinstruments.networking.packet.LooperRecordStatePacket;
+import com.cstav.evenmoreinstruments.networking.packet.c2s.DoesLooperExistPacket;
+import com.cstav.evenmoreinstruments.networking.packet.c2s.LooperRecordStatePacket;
 import com.cstav.evenmoreinstruments.util.LooperUtil;
 import com.cstav.genshinstrument.client.gui.screen.instrument.partial.InstrumentScreen;
 import com.cstav.genshinstrument.util.InstrumentEntityData;

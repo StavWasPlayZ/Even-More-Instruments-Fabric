@@ -1,7 +1,7 @@
 package com.cstav.evenmoreinstruments.item;
 
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
-import com.cstav.evenmoreinstruments.networking.packet.OpenNoteBlockInstrumentPacket;
+import com.cstav.evenmoreinstruments.networking.packet.s2c.OpenNoteBlockInstrumentPacket;
 import com.cstav.genshinstrument.item.InstrumentItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;

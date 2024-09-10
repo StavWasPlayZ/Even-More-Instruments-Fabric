@@ -10,7 +10,7 @@ import com.cstav.evenmoreinstruments.item.emirecord.EMIRecordItem;
 import com.cstav.evenmoreinstruments.item.emirecord.RecordRepository;
 import com.cstav.evenmoreinstruments.mixins.util.InjectedBlockEntity;
 import com.cstav.evenmoreinstruments.networking.EMIPacketHandler;
-import com.cstav.evenmoreinstruments.networking.packet.LooperPlayStatePacket;
+import com.cstav.evenmoreinstruments.networking.packet.s2c.LooperPlayStatePacket;
 import com.cstav.evenmoreinstruments.util.CommonUtil;
 import com.cstav.evenmoreinstruments.util.LooperRecordEntityData;
 import com.cstav.evenmoreinstruments.util.LooperUtil;
