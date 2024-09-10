@@ -127,7 +127,7 @@ public class EMIRecordCommand {
         if (recordChannel.isEmpty())
             throw ERROR_RECORD_INVALID.create(recordName);
 
-        record.get().set(ModDataComponents.BURNED_MEDIA.get(), recordName);
+        record.get().set(ModDataComponents.BURNED_MEDIA, recordName);
 
         stack.getSource().sendSuccess(() -> Component.translatable("commands.evenmoreinstruments.emirecord.success.record_burned"), true);
         return 1;
