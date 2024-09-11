@@ -14,9 +14,9 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
  */
 public class SyncModTagPacket extends IModPacket {
     public static final String MOD_ID = EMIMain.MODID;
-    public static final StreamCodec<RegistryFriendlyByteBuf, OpenNoteBlockInstrumentPacket> CODEC = CustomPacketPayload.codec(
-        OpenNoteBlockInstrumentPacket::write,
-        OpenNoteBlockInstrumentPacket::new
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncModTagPacket> CODEC = CustomPacketPayload.codec(
+        SyncModTagPacket::write,
+        SyncModTagPacket::new
     );
 
     public final CompoundTag modTag;
