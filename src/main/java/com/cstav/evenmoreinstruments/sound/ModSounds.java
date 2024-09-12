@@ -54,7 +54,7 @@ public class ModSounds {
 
 
     private static ResourceLocation loc(final String id) {
-        return new ResourceLocation(EMIMain.MODID, id);
+        return EMIMain.loc(id);
     }
     private static NoteSoundRegistrar nsr(final ResourceLocation location) {
         return new NoteSoundRegistrar(location);

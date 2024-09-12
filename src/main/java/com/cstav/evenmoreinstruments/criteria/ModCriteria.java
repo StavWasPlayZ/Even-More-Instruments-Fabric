@@ -4,7 +4,6 @@ import com.cstav.evenmoreinstruments.EMIMain;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 
 public class ModCriteria {
     public static void load() {}
@@ -14,7 +13,7 @@ public class ModCriteria {
     private static <T extends CriterionTrigger<?>> T register(String name, T criterionTrigger) {
         return Registry.register(
             BuiltInRegistries.TRIGGER_TYPES,
-            new ResourceLocation(EMIMain.MODID, name),
+            EMIMain.loc(name),
             criterionTrigger
         );
     }

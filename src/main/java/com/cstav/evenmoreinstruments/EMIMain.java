@@ -17,6 +17,7 @@ import com.cstav.evenmoreinstruments.server.command.ModCommands;
 import com.cstav.evenmoreinstruments.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,11 @@ import org.slf4j.LoggerFactory;
 public class EMIMain implements ModInitializer {
     public static final String MODID = "evenmoreinstruments";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+
+    public static ResourceLocation loc(final String name) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, name);
+    }
+
 
 //    public static CompoundTag modTag(final ItemStack item) {
 //        return item.getOrCreateTagElement(MODID);

@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
 public class ShamisenScreen extends GridInstrumentScreen {
-    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(EMIMain.MODID, "shamisen");
+    public static final ResourceLocation INSTRUMENT_ID = EMIMain.loc("shamisen");
 
     @Override
     public NoteSound[] getInitSounds() {

@@ -50,7 +50,7 @@ public class ModDataComponents {
     private static <T> DataComponentType<T> register(final String name, final UnaryOperator<Builder<T>> builder) {
         return Registry.register(
             BuiltInRegistries.DATA_COMPONENT_TYPE,
-            new ResourceLocation(EMIMain.MODID, name),
+            EMIMain.loc(name),
             builder.apply(DataComponentType.builder()).build()
         );
     }

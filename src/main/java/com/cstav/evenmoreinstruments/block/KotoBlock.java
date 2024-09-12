@@ -6,7 +6,6 @@ import com.cstav.genshinstrument.networking.packet.instrument.util.InstrumentPac
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -37,7 +36,7 @@ public class KotoBlock extends DoubleInstrumentBlock {
 
     @Override
     protected void onInstrumentOpen(ServerPlayer player) {
-        InstrumentPacketUtil.sendOpenPacket(player, new ResourceLocation(EMIMain.MODID, "koto"));
+        InstrumentPacketUtil.sendOpenPacket(player, EMIMain.loc("koto"));
     }
 
 

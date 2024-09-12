@@ -3,7 +3,6 @@ package com.cstav.evenmoreinstruments.block;
 import com.cstav.evenmoreinstruments.EMIMain;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -30,7 +29,7 @@ public class ModBlocks {
 
 
     public static Block register(final String name, final Block block) {
-        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation(EMIMain.MODID, name), block);
+        Registry.register(BuiltInRegistries.BLOCK, EMIMain.loc(name), block);
         return block;
     }
 

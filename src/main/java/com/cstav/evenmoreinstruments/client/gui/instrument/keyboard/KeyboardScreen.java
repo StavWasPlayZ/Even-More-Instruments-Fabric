@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
 public class KeyboardScreen extends GridInstrumentScreen {
-    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(EMIMain.MODID, "keyboard");
+    public static final ResourceLocation INSTRUMENT_ID = EMIMain.loc("keyboard");
 
     @Override
     public boolean isGenshinInstrument() {

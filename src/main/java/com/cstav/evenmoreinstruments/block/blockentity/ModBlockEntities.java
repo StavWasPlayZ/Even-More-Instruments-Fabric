@@ -4,7 +4,6 @@ import com.cstav.evenmoreinstruments.EMIMain;
 import com.cstav.evenmoreinstruments.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
@@ -26,7 +25,7 @@ public class ModBlockEntities {
     );
     
     private static <T extends BlockEntity> BlockEntityType<T> register(final String name, final BlockEntityType<T> bet) {
-        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(EMIMain.MODID, name), bet);
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, EMIMain.loc(name), bet);
         return bet;
     }
     

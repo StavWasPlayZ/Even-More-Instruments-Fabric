@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 @Environment(EnvType.CLIENT)
 public class TromboneScreen extends GridInstrumentScreen {
-    public static final ResourceLocation INSTRUMENT_ID = new ResourceLocation(EMIMain.MODID, "trombone");
+    public static final ResourceLocation INSTRUMENT_ID = EMIMain.loc("trombone");
 
 
     @Override
