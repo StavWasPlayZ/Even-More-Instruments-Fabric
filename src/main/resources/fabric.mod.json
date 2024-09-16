@@ -5,7 +5,7 @@
 	"name": "Even More Instruments!",
 	"description": "A mod that expands on the capabilities of the Genshin Instruments mod with new instruments, tools and other cool stuff",
 	"authors": [
-		"Stav (IGN StavWasPlayZ)"
+		"StavWasPlayZ"
 	],
 	"contact": {
 		"homepage": "https://www.curseforge.com/minecraft/mc-mods/even-more-instruments",
@@ -38,6 +38,7 @@
 		"minecraft": ">=1.20-1.20.1",
 		"java": ">=17",
 
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"forgeconfigapiport": "*"
 	}
 }
