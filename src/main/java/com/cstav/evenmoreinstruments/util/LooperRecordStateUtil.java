@@ -98,7 +98,7 @@ public class LooperRecordStateUtil {
     }
 
     private static void notifyLooperUnplayable(final ServerPlayer player) {
-        EMIPacketHandler.sendToClient(new LooperUnplayablePacket(), player);
+        EMIPacketHandler.sendToClient(LooperUnplayablePacket.INSTANCE, player);
     }
 
 }
