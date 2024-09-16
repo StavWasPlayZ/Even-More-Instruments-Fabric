@@ -26,6 +26,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Environment(EnvType.CLIENT)
 public class LooperOverlayInjector {
+    public static void load() {
+        ScreenEvents.AFTER_INIT.register(LooperOverlayInjector::afterScreenInit);
+        ScreenEvents.BEFORE_INIT.register(LooperOverlayInjector::beforeScreenInit);
+    }
+
     private static final int REC_BTN_WIDTH = 120;
 
     private static InstrumentScreen screen = null;
@@ -129,12 +134,12 @@ public class LooperOverlayInjector {
         EMIPacketHandler.sendToServer(new LooperRecordStatePacket(isRecording, hand));
     }
 
-    private static BlockEntity getIBE(final Player player) {
-        final BlockPos instrumentPos = InstrumentEntityData.getBlockPos(player);
-
-        return (instrumentPos == null) ? null
-            : player.level().getBlockEntity(instrumentPos);
-    }
+//    private static BlockEntity getIBE(final Player player) {
+//        final BlockPos instrumentPos = InstrumentEntityData.getBlockPos(player);
+//
+//        return (instrumentPos == null) ? null
+//            : player.level().getBlockEntity(instrumentPos);
+//    }
 
 
     public static void removeRecordButton() {

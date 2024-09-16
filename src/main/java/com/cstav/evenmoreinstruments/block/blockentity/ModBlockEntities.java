@@ -13,13 +13,17 @@ public class ModBlockEntities {
 
      public static final BlockEntityType<LooperBlockEntity> LOOPER = register("looper",
          BlockEntityType.Builder.of(
-             LooperBlockEntity::new, ModBlocks.LOOPER
+             LooperBlockEntity::new,
+             ModBlocks.LOOPER
          ).build(null)
      );
 
     public static final BlockEntityType<ModInstrumentBlockEntity> INSTRUMENT_BE = register("instrument_be",
-        BlockEntityType.Builder.of(ModInstrumentBlockEntity::new,
-            ModBlocks.KEYBOARD, ModBlocks.KEYBOARD_STAND
+        BlockEntityType.Builder.of(
+            ModInstrumentBlockEntity::new,
+            ModBlocks.KEYBOARD,
+            ModBlocks.KEYBOARD_STAND,
+            ModBlocks.KOTO
         )
         .build(null)
     );
