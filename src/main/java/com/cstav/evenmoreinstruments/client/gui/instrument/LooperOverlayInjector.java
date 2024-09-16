@@ -26,6 +26,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Environment(EnvType.CLIENT)
 public class LooperOverlayInjector {
+    public static void load() {
+        ScreenEvents.AFTER_INIT.register(LooperOverlayInjector::afterScreenInit);
+        ScreenEvents.BEFORE_INIT.register(LooperOverlayInjector::beforeScreenInit);
+    }
+
     private static final int REC_BTN_WIDTH = 120;
 
     private static InstrumentScreen screen = null;
