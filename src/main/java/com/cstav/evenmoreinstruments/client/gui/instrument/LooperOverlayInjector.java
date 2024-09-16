@@ -129,12 +129,12 @@ public class LooperOverlayInjector {
         EMIPacketHandler.sendToServer(new LooperRecordStatePacket(isRecording, hand));
     }
 
-    private static BlockEntity getIBE(final Player player) {
-        final BlockPos instrumentPos = InstrumentEntityData.getBlockPos(player);
-
-        return (instrumentPos == null) ? null
-            : player.level().getBlockEntity(instrumentPos);
-    }
+//    private static BlockEntity getIBE(final Player player) {
+//        final BlockPos instrumentPos = InstrumentEntityData.getBlockPos(player);
+//
+//        return (instrumentPos == null) ? null
+//            : player.level().getBlockEntity(instrumentPos);
+//    }
 
 
     public static void removeRecordButton() {
