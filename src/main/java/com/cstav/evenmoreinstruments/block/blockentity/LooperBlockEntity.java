@@ -281,6 +281,9 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         lockedBy = player;
     }
 
+    /**
+     * Used for stopping the Looper's recording
+     */
     public void lock() {
         locked = true;
         lockedBy = null;
@@ -549,6 +552,13 @@ public class LooperBlockEntity extends BlockEntity implements ContainerSingleIte
         getLevel().addFreshEntity(itementity);
 
         removeItem(0, 1);
+    }
+
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        stopAndClearHeldSounds();
     }
 
 

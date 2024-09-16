@@ -4,7 +4,6 @@ import com.cstav.evenmoreinstruments.EMIMain;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -16,10 +15,10 @@ public class ModBlocks {
 
     public static final Block
         KEYBOARD = register("keyboard", new KeyboardBlock(
-            Properties.ofFullCopy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
+            Properties.of().noOcclusion().strength(.3f)
         )),
         KEYBOARD_STAND = register("keyboard_stand", new KeyboardStandBlock(
-            Properties.ofFullCopy(Blocks.STONE).mapColor(DyeColor.BLACK).noOcclusion().strength(.3f)
+            Properties.of().noOcclusion().strength(.3f)
         )),
         KOTO = register("koto", new KotoBlock(
             Properties.of().noOcclusion().strength(.3f).sound(SoundType.WOOD)
