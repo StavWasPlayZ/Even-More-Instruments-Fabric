@@ -3,11 +3,11 @@ plugins {
 	id 'maven-publish'
 }
 
-version = project.mod_version
+version = "fabric-${archives_version_range}-${project.mod_version}"
 group = project.maven_group
 
 base {
-	archivesName = project.archives_base_name + "-fabric-" + project.minecraft_version
+	archivesName = project.archives_base_name
 }
 
 repositories {
@@ -59,7 +59,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 //	modImplementation "maven.modrinth:genshin-instruments:${project.genshinstrument_version}"
-	modImplementation "idc:genshinstrument-fabric:${project.minecraft_version}-${project.genshinstrument_version}"
+	modImplementation "idc:genshinstrument-fabric:${project.genshinstrument_version}"
 	modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_port_version}"
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
@@ -107,6 +107,7 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+			artifactId = mod_id
 			from components.java
 		}
 	}
