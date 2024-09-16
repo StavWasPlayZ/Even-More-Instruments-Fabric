@@ -88,7 +88,7 @@ public class DoesLooperExistPacket extends IModPacket {
         }
 
         if (looperBE == null)
-            EMIPacketHandler.sendToClient(new LooperUnplayablePacket(), player);
+            EMIPacketHandler.sendToClient(LooperUnplayablePacket.INSTANCE, player);
     }
 
 }

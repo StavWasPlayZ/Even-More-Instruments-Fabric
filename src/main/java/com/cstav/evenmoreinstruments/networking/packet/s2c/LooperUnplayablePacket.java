@@ -13,4 +13,6 @@ public class LooperUnplayablePacket extends IModPacket {
     public static final LooperUnplayablePacket INSTANCE = new LooperUnplayablePacket();
     public static final String MOD_ID = EMIMain.MODID;
     public static final StreamCodec<RegistryFriendlyByteBuf, LooperUnplayablePacket> CODEC = StreamCodec.unit(INSTANCE);
+
+    private LooperUnplayablePacket() {}
 }
