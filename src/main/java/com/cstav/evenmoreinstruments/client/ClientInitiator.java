@@ -19,7 +19,6 @@ import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -55,11 +54,10 @@ public class ClientInitiator implements ClientModInitializer {
         KeyMappings.load();
 
         ForgeConfigRegistry.INSTANCE.register(EMIMain.MODID, ModConfig.Type.CLIENT, ModClientConfigs.CONFIGS);
+
         CommonUtil.loadClasses(LOAD_ME);
         InstrumentScreenRegistry.register(INSTRUMENTS);
-
-        ScreenEvents.AFTER_INIT.register(LooperOverlayInjector::afterScreenInit);
-        ScreenEvents.BEFORE_INIT.register(LooperOverlayInjector::beforeScreenInit);
+        LooperOverlayInjector.load();
     }
     
 }

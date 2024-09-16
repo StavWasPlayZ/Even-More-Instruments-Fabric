@@ -29,11 +29,12 @@ public class BlockEntityNBTInjector implements InjectedBlockEntity {
 
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
-    protected void saveAdditionalInjector(CompoundTag tag, CallbackInfo ci) {
-        tag.put(EMIMain.MODID, evenmoreinstruments$getModTag());
+    private void saveAdditionalInjector(CompoundTag tag, CallbackInfo ci) {
+        if (!persistentData.isEmpty())
+            tag.put(EMIMain.MODID, evenmoreinstruments$getModTag());
     }
     @Inject(method = "load", at = @At("TAIL"))
-    protected void loadInjector(CompoundTag tag, CallbackInfo ci) {
+    private void loadInjector(CompoundTag tag, CallbackInfo ci) {
         persistentData = tag.getCompound(EMIMain.MODID);
     }
 
