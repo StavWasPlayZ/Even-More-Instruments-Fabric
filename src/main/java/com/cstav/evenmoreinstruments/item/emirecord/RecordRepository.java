@@ -28,10 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -105,14 +102,40 @@ public class RecordRepository {
         });
     }
     private static void loadRecord(final ResourceLocation loc, final JsonElement channelObj) {
-        RECORDS.put(stripFullPath(loc), (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, channelObj));
+        RECORDS.put(
+            stripFullPath(loc),
+            (CompoundTag) JsonOps.INSTANCE.convertTo(NbtOps.INSTANCE, channelObj)
+        );
+
         LOGGER.info("Successfully loaded burned record {}", loc);
     }
 
+    /**
+     * Strips away the file extension of the provided resource
+     */
     private static ResourceLocation stripFullPath(final ResourceLocation loc) {
-        final String[] paths = loc.getPath().split("/");
-        final String path = paths[paths.length - 1];
-        return loc.withPath(path.substring(0, path.lastIndexOf('.')));
+        final List<String> paths = new ArrayList<>(Arrays.asList(
+            loc.getPath().split("/")
+        ));
+
+        // We don't care about the records directory; it's common to all.
+        if (loc.getPath().startsWith(EMIMain.MODID + "/records")) {
+            paths.subList(0, 2).clear();
+        }
+
+        // Remove any extensions
+        final int fileNameIndex = paths.size() - 1;
+        final String fileName = paths.get(fileNameIndex);
+
+        // This is assuming the period character is disallowed
+        final int periodIndex = fileName.indexOf(".");
+
+        if (periodIndex != -1) {
+            paths.remove(fileNameIndex);
+            paths.add(fileName.substring(0, periodIndex));
+        }
+
+        return loc.withPath(String.join("/", paths));
     }
 
 
