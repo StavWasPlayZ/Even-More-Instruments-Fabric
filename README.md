@@ -9,6 +9,12 @@ And a looper.
 
 Check out the Forge port [here](https://github.com/StavWasPlayZ/Even-More-Instruments/)!
 
+>[!WARNING]
+> # This Mod is No Longer being Maintained.
+> I'm too burnt out and busy to do anything.
+>
+> See the CurseForge page for more info.
+
 ## I have an idea for a new instrument!
 
 Feel free to suggest a new instrument to the project [here](https://github.com/StavWasPlayZ/Even-More-Instruments/issues/new?assignees=&labels=instrument+request&projects=&template=new-instrument-request.md&title=New+Instrument+Request%3A+Musical+Toilet+Paper)!  
